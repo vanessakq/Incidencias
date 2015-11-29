@@ -4,6 +4,8 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.android.proyecto.incidencias.model.Usuario;
+
 
 /**
  * Created by JoseLuis on 29/11/2015.

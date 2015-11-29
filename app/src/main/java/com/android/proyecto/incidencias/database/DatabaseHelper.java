@@ -14,7 +14,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final int DB_VERSION = 1;
 
     //TABLA USUARIOS
-    public static final String TABLE_USUARIO = "";
+    public static final String TABLE_USUARIO = "Usuario";
     public static final String COLUMN_NOMBRE = "nombre";
     public static final String COLUMN_CORREO = "correo";
     public static final String COLUMN_CLAVE = "clave";
@@ -26,10 +26,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     COLUMN_CORREO + " TEXT, " +
                     COLUMN_CLAVE + " TEXT);";
 
-    private static final String DROP_TABLE_USUARIO = "DROP TABLE IF EXISTS ";
+    private static final String DROP_TABLE_USUARIO = "DROP TABLE IF EXISTS Usuario";
 
     //TABLA INCIDENCIA
-    public static final String TABLE_INCIDENCIA = "";
+    public static final String TABLE_INCIDENCIA = "Incidencia";
     public static final String COLUMN_TITULO = "titulo";
     public static final String COLUMN_TIPO = "tipo";
     public static final String COLUMN_LUGAR = "lugar";
@@ -43,7 +43,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     COLUMN_LUGAR + " TEXT, " +
                     COLUMN_CONTENIDO + " TEXT);";
 
-    private static final String DROP_TABLE_INCIDENCIA = "DROP TABLE IF EXISTS ";
+    private static final String DROP_TABLE_INCIDENCIA = "DROP TABLE IF EXISTS Incidencia";
 
     public DatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
