@@ -54,9 +54,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Toast.makeText(getApplicationContext(), "Credenciales incorrectas",Toast.LENGTH_SHORT).show();
 
 
-                /*Katherine Vanessa Quispe Gardella soy un monooooooooooooooooooo*/
 
-                /*Aqui esta mi cambio mono ------ cara de mono prueba*/
             }
         }
     }
