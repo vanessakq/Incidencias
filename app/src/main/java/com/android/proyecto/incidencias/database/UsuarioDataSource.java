@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
+
 /**
  * Created by JoseLuis on 29/11/2015.
  */
@@ -17,11 +18,12 @@ public class UsuarioDataSource {
         mDatabase = mDatabaseHelper.getWritableDatabase();
     }
 
-    public void insert(Usua noticia){
+    public void insert(Usuario usuario){
         ContentValues values = new ContentValues();
-        values.put(DatabaseHelper.COLUMN_TITLE, noticia.title);
-        values.put(DatabaseHelper.COLUMN_CONTENT, noticia.description);
-        mDatabase.insert(DatabaseHelper.TABLE_NOTICIA, null, values);
+        values.put(DatabaseHelper.COLUMN_NOMBRE, usuario.nombre);
+        values.put(DatabaseHelper.COLUMN_CORREO, usuario.correo);
+        values.put(DatabaseHelper.COLUMN_CLAVE, usuario.clave);
+        mDatabase.insert(DatabaseHelper.TABLE_USUARIO, null, values);
     }
 
 }
