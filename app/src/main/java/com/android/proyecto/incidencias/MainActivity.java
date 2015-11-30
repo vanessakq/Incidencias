@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void startListaAllActivity(){
         if (validateFields()) {
             if(mTxt_LoginEmail.getText().toString().equals("admin") && mTxt_LoginContrasena.getText().toString().equals("admin")) {
-                Intent intent = new Intent(this, ListaActivity.class);
+                Intent intent = new Intent(this, IncidenciaActivity.class);
                 startActivity(intent);
             }
             else{

@@ -11,21 +11,21 @@ import com.android.proyecto.incidencias.model.Incidencia;
 
 import java.util.ArrayList;
 
-public class ListaActivity extends AppCompatActivity {
+public class IncidenciaActivity extends AppCompatActivity {
 
     private RecyclerView recView;
     ArrayList<Incidencia> mIncidencias;
-    private RecyclerView.Adapter<ListaAdapter.ViewHolder> adapter;
+    private RecyclerView.Adapter<IncidenciaAdapter.ViewHolder> adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_lista);
+        setContentView(R.layout.activity_incidencia);
 
         mIncidencias = new ArrayList<Incidencia>();
 
         recView = (RecyclerView) findViewById(R.id.rcvi_AllIncidencias);
 
-        adapter = new ListaAdapter(mIncidencias);
+        adapter = new IncidenciaAdapter(mIncidencias);
         recView.setAdapter(adapter);
     }
 

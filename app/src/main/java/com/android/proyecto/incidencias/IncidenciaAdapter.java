@@ -18,13 +18,13 @@ import java.util.List;
 /**
  * Created by kate on 29/11/2015.
  */
-public class ListaAdapter extends RecyclerView.Adapter<ListaAdapter.ViewHolder> implements View.OnClickListener{
+public class IncidenciaAdapter extends RecyclerView.Adapter<IncidenciaAdapter.ViewHolder> implements View.OnClickListener{
 
     private static final  String TAG ="ListaAdapter";
     private View.OnClickListener listener;
     private ArrayList<Incidencia> objects;
 
-    public ListaAdapter(ArrayList<Incidencia> objects) {
+    public IncidenciaAdapter(ArrayList<Incidencia> objects) {
         this.objects = objects;
     }
 

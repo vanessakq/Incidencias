@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         >
         <EditText
-            android:id="@+id/Txt_RgsNombre"
+            android:id="@+id/txt_RgsNombre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Nombre Completo"
@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         >
         <EditText
-            android:id="@+id/Txt_RgsMail"
+            android:id="@+id/txt_RgsMail"
             android:hint="E-Mail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         >
         <EditText
-            android:id="@+id/Txt_RgsCoontasena"
+            android:id="@+id/txt_RgsContasena"
             android:hint="Contraseña"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

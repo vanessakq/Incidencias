@@ -21,9 +21,7 @@
         </activity>
         <activity android:name=".RegistrarUsuarioActivity" >
         </activity>
-        <activity android:name=".ListaActivity" >
-        </activity>
-        <activity android:name=".ItemListaActivity" >
+        <activity android:name=".IncidenciaActivity" >
         </activity>
         <activity android:name=".RegistroIncidenciaActivity" >
         </activity>

@@ -61,4 +61,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(DROP_TABLE_INCIDENCIA);
         onCreate(db);
     }
+
+
 }
