@@ -19,7 +19,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RegistrarseActivity" >
+        <activity android:name=".RegistrarUsuarioActivity" >
         </activity>
         <activity android:name=".ListaActivity" >
         </activity>

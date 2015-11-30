@@ -6,15 +6,10 @@ import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.proyecto.incidencias.model.Incidencia;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class ListaActivity extends AppCompatActivity {
 
@@ -54,7 +49,7 @@ public class ListaActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
     private void startRegistroIncidenciaActivity(){
-        Intent intent = new Intent(this, RegistrarseActivity.class);
+        Intent intent = new Intent(this, RegistrarUsuarioActivity.class);
         startActivity(intent);
     }
 }
