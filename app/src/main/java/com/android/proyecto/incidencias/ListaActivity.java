@@ -3,15 +3,35 @@ package com.android.proyecto.incidencias;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.proyecto.incidencias.model.Incidencia;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ListaActivity extends AppCompatActivity {
 
+    private RecyclerView recView;
+    ArrayList<Incidencia> mIncidencias;
+    private RecyclerView.Adapter<ListaAdapter.ViewHolder> adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista);
+
+        mIncidencias = new ArrayList<Incidencia>();
+
+        recView = (RecyclerView) findViewById(R.id.rcvi_AllIncidencias);
+
+        adapter = new ListaAdapter(mIncidencias);
+        recView.setAdapter(adapter);
     }
 
     protected void onResume() {
@@ -34,7 +54,7 @@ public class ListaActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
     private void startRegistroIncidenciaActivity(){
-        //Intent intent = new Intent(this, RegistrarseActivity.class);
-        //startActivity(intent);
+        Intent intent = new Intent(this, RegistrarseActivity.class);
+        startActivity(intent);
     }
 }

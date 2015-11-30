@@ -27,7 +27,7 @@
             android:orientation="horizontal"
             android:layout_weight="3"
             >
-            <TextView android:id="@+id/Lbl_LstItmTitulo"
+            <TextView android:id="@+id/lbl_LstItmTitulo"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
