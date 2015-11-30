@@ -65,7 +65,6 @@ public class RegistrarUsuarioActivity extends AppCompatActivity implements View.
 
     }
     private void startRegresarLogin(){
-        Toast.makeText(this, "Regresar", Toast.LENGTH_SHORT).show();
         Log.d(TAG, "Item");
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);

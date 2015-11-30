@@ -8,9 +8,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.proyecto.incidencias.database.UsuarioDataSource;
+import com.android.proyecto.incidencias.model.Usuario;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
+
     private EditText mTxt_LoginEmail, mTxt_LoginContrasena;
+
+    private Usuario mUsuario;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,18 +51,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return valid;
     }
     private void startListaAllActivity(){
+        mUsuario.correo = mTxt_LoginEmail.getText().toString();
+        mUsuario.clave = mTxt_LoginContrasena.getText().toString();
+
         if (validateFields()) {
-            if(mTxt_LoginEmail.getText().toString().equals("admin") && mTxt_LoginContrasena.getText().toString().equals("admin")) {
-                Intent intent = new Intent(this, IncidenciaActivity.class);
-                startActivity(intent);
-            }
-            else{
-                Toast.makeText(getApplicationContext(), "Credenciales incorrectas",Toast.LENGTH_SHORT).show();
-
-
-
-            }
+            UsuarioDataSource dataSource = new UsuarioDataSource(this);
+            dataSource.validarusuario();
+            finish();
         }
+
+
     }
     private void startRegistrarActivity(){
         Intent intent = new Intent(this, RegistrarUsuarioActivity.class);
