@@ -33,7 +33,7 @@ public class UsuarioDataSource {
         values.put(DatabaseHelper.COLUMN_CLAVE, usuario.clave);
         mDatabase.insert(DatabaseHelper.TABLE_USUARIO, null, values);
     }
-    public List<Usuario> validarusuario(){
+    public Usuario validarusuario(){
 
         String[] columns = {
                 BaseColumns._ID,
@@ -41,24 +41,18 @@ public class UsuarioDataSource {
                 DatabaseHelper.COLUMN_CLAVE
         };
         Cursor cursor = mDatabase.query(DatabaseHelper.TABLE_USUARIO,columns, DatabaseHelper.COLUMN_CORREO + "=?" + " and "  + DatabaseHelper.COLUMN_CLAVE + " =? ",null,null,null,null);
-        List<Usuario> lstUsuario = new ArrayList<>();
-
+        Usuario usuario = new Usuario();
         if (cursor.moveToFirst()) {
             do {
-                Usuario usuario = new Usuario();
-
                 usuario.id = cursor.getInt(cursor.getColumnIndex(BaseColumns._ID));
                 usuario.correo = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_CORREO));
                 usuario.clave = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_CLAVE));
-
-                lstUsuario.add(usuario);
             } while (cursor.moveToNext());
         }
         if (cursor != null && !cursor.isClosed()) {
             cursor.close();
         }
-
-        return lstUsuario;
+        return usuario;
     }
 
 

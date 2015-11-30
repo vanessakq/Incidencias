@@ -3,6 +3,7 @@ package com.android.proyecto.incidencias;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,6 +15,7 @@ import com.android.proyecto.incidencias.model.Usuario;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
 
+    private static final String TAG = "Hola";
     private EditText mTxt_LoginEmail, mTxt_LoginContrasena;
 
     private Usuario mUsuario;
@@ -51,13 +53,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return valid;
     }
     private void startListaAllActivity(){
+        Toast.makeText(this, "FUncion", Toast.LENGTH_SHORT).show();
         mUsuario.correo = mTxt_LoginEmail.getText().toString();
         mUsuario.clave = mTxt_LoginContrasena.getText().toString();
 
         if (validateFields()) {
+            /*Log.d(TAG, "entra");
             UsuarioDataSource dataSource = new UsuarioDataSource(this);
+            Log.d(TAG, "Graba");
             dataSource.validarusuario();
-            finish();
+            Log.d(TAG, dataSource.validarusuario().clave);
+
+            finish();*/
         }
 
 
