@@ -51,18 +51,41 @@ public class RegistrarUsuarioActivity extends AppCompatActivity implements View.
                 break;
         }
     }
-    private void startRegistrarUsuario(){
-        Usuario usuario = new Usuario();
-        usuario.nombre = mEditUsuario.getText().toString();
-        usuario.correo = mEdtCorreo.getText().toString();
-        usuario.clave = mEdtPass.getText().toString();
-        //BD
-        UsuarioDataSource dataSource = new UsuarioDataSource(this);
-        dataSource.insert(usuario);
-        Log.d(TAG, "Inserto" + usuario);
-        Toast.makeText(this, "Usuario Creado", Toast.LENGTH_SHORT).show();
-        finish();
+    private boolean validateFields(){
+        boolean valid =true;
+        if(mEditUsuario.getText().toString().isEmpty()){
+            mEditUsuario.setError("Usuario Requerido");
+            valid = false;
+        }else if (mEdtCorreo.getText().toString().isEmpty()){
+            mEdtCorreo.setError("Correo Requerido");
+            valid = false;
+        }else if (mEdtPass.getText().toString().isEmpty()){
+            mEdtPass.setError("Contraseña Requerida");
+            valid = false;
+        }
+        return valid;
+    }
 
+    private void startRegistrarUsuario(){
+        if (validateFields()) {
+            Usuario usuario = new Usuario();
+            usuario.nombre = mEditUsuario.getText().toString();
+            usuario.correo = mEdtCorreo.getText().toString();
+            usuario.clave = mEdtPass.getText().toString();
+            String correoNuevo = mEdtCorreo.getText().toString();
+            String claveNueva = mEdtPass.getText().toString();
+            UsuarioDataSource dataSource = new UsuarioDataSource(this);
+            String storedPassword = dataSource.validarusuario(correoNuevo);
+            if(claveNueva.equals(storedPassword))
+            {
+                Toast.makeText(this, "Usuario ya ingresado", Toast.LENGTH_LONG).show();
+            }
+            else
+            {
+                dataSource.insert(usuario);
+            }
+            finish();
+        }
     }
     private void startRegresarLogin(){
         Log.d(TAG, "Item");

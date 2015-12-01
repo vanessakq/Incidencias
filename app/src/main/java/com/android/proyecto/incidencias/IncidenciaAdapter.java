@@ -35,7 +35,6 @@ public class IncidenciaAdapter extends RecyclerView.Adapter<IncidenciaAdapter.Vi
 
         public TitularesViewHolder(View itemView) {
             super(itemView);
-
             txtTitulo = (TextView)itemView.findViewById(R.id.lbl_LstItmTitulo);
 
         }

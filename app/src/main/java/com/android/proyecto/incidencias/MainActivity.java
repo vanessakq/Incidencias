@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private static final String TAG = "Hola";
     private EditText mTxt_LoginEmail, mTxt_LoginContrasena;
-
+    public String UsuarioLogeado;
     private Usuario mUsuario;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +60,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             String storedPassword = dataSource.validarusuario(correo);
             if(clave.equals(storedPassword))
             {
+
+                UsuarioLogeado = mTxt_LoginEmail.getText().toString();
                 Intent intent = new Intent(this, IncidenciaActivity.class);
                 startActivity(intent);
            }

@@ -7,4 +7,7 @@
     <item android:id="@+id/action_todas"
         android:title="Todas las Incidencia"
         app:showAsAction="ifRoom"/>
+    <item android:id="@+id/action_cerrar"
+        android:title="Cerrar Sesión"
+        app:showAsAction="ifRoom"/>
 </menu>

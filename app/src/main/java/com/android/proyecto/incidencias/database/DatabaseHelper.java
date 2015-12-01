@@ -31,6 +31,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     //TABLA INCIDENCIA
     public static final String TABLE_INCIDENCIA = "Incidencia";
     public static final String COLUMN_TITULO = "titulo";
+    public static final String COLUMN_COD_USUARIO = "codusuario";
     public static final String COLUMN_TIPO = "tipo";
     public static final String COLUMN_LUGAR = "lugar";
     public static final String COLUMN_CONTENIDO = "contenido";
@@ -38,6 +39,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String CREATE_TABLE_INCIDENCIA =
             "CREATE TABLE "+ TABLE_INCIDENCIA +
                     " (" + BaseColumns._ID + " INTEGER PRIMARY KEY, " +
+                    COLUMN_COD_USUARIO + " INTEGER, " +
                     COLUMN_TITULO + " TEXT, " +
                     COLUMN_TIPO + " TEXT, " +
                     COLUMN_LUGAR + " TEXT, " +
