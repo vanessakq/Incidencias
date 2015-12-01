@@ -33,16 +33,18 @@ public class UsuarioDataSource {
         values.put(DatabaseHelper.COLUMN_CLAVE, usuario.clave);
         mDatabase.insert(DatabaseHelper.TABLE_USUARIO, null, values);
     }
-    public Usuario validarusuario(){
+    public String validarusuario(String usuario){
 
-        String[] columns = {
-                BaseColumns._ID,
-                DatabaseHelper.COLUMN_CORREO,
-                DatabaseHelper.COLUMN_CLAVE
-        };
-        Cursor cursor = mDatabase.query(DatabaseHelper.TABLE_USUARIO,columns, DatabaseHelper.COLUMN_CORREO + "=?" + " and "  + DatabaseHelper.COLUMN_CLAVE + " =? ",null,null,null,null);
-        Usuario usuario = new Usuario();
-        if (cursor.moveToFirst()) {
+        Cursor cursor = mDatabase.query(DatabaseHelper.TABLE_USUARIO,null, DatabaseHelper.COLUMN_CORREO + "=?",new String[]{usuario},null,null,null);
+
+        if(cursor.getCount()<1) // UserName Not Exist
+            return "NOT EXIST";
+
+        cursor.moveToFirst();
+        String password= cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_CLAVE));
+        return password;
+
+        /*if (cursor.moveToFirst()) {
             do {
                 usuario.id = cursor.getInt(cursor.getColumnIndex(BaseColumns._ID));
                 usuario.correo = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_CORREO));
@@ -52,7 +54,7 @@ public class UsuarioDataSource {
         if (cursor != null && !cursor.isClosed()) {
             cursor.close();
         }
-        return usuario;
+        return usuario;*/
     }
 
 

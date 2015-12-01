@@ -53,21 +53,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return valid;
     }
     private void startListaAllActivity(){
-        Toast.makeText(this, "FUncion", Toast.LENGTH_SHORT).show();
-        mUsuario.correo = mTxt_LoginEmail.getText().toString();
-        mUsuario.clave = mTxt_LoginContrasena.getText().toString();
-
         if (validateFields()) {
-            /*Log.d(TAG, "entra");
+            String correo = mTxt_LoginEmail.getText().toString();
+            String clave = mTxt_LoginContrasena.getText().toString();
             UsuarioDataSource dataSource = new UsuarioDataSource(this);
-            Log.d(TAG, "Graba");
-            dataSource.validarusuario();
-            Log.d(TAG, dataSource.validarusuario().clave);
-
-            finish();*/
+            String storedPassword = dataSource.validarusuario(correo);
+            if(clave.equals(storedPassword))
+            {
+                Intent intent = new Intent(this, IncidenciaActivity.class);
+                startActivity(intent);
+           }
+           else
+            {
+                Toast.makeText(this, "Login Incorrecto", Toast.LENGTH_LONG).show();
+            }
         }
-
-
     }
     private void startRegistrarActivity(){
         Intent intent = new Intent(this, RegistrarUsuarioActivity.class);
