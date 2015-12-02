@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.android.proyecto.incidencias.model.Usuario;
@@ -18,6 +19,7 @@ import java.util.List;
  */
 public class UsuarioDataSource {
 
+    private static final String TAG = "BDEntrooooooooooooooooo" ;
     private final DatabaseHelper mDatabaseHelper;
     private final SQLiteDatabase mDatabase;
 
@@ -36,7 +38,7 @@ public class UsuarioDataSource {
     public String validarusuario(String usuario){
 
         Cursor cursor = mDatabase.query(DatabaseHelper.TABLE_USUARIO,null, DatabaseHelper.COLUMN_CORREO + "=?",new String[]{usuario},null,null,null);
-
+        List<Usuario> lstpassUsuario = new ArrayList<>();
         if(cursor.getCount()<1) // UserName Not Exist
             return "NOT EXIST";
 
@@ -44,18 +46,14 @@ public class UsuarioDataSource {
         String password= cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_CLAVE));
         return password;
 
-        /*if (cursor.moveToFirst()) {
-            do {
-                usuario.id = cursor.getInt(cursor.getColumnIndex(BaseColumns._ID));
-                usuario.correo = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_CORREO));
-                usuario.clave = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_CLAVE));
-            } while (cursor.moveToNext());
-        }
-        if (cursor != null && !cursor.isClosed()) {
-            cursor.close();
-        }
-        return usuario;*/
     }
+    public int idUsuario(String usuario){
+        Cursor cursor = mDatabase.query(DatabaseHelper.TABLE_USUARIO,null, DatabaseHelper.COLUMN_CORREO + "=?",new String[]{usuario},null,null,null);
+        cursor.moveToFirst();
+        int id_Usuario = cursor.getInt(cursor.getColumnIndex(BaseColumns._ID));
 
+        Log.d(TAG, "EntrooooooidUsuario " + id_Usuario);
+        return id_Usuario;
+    }
 
 }

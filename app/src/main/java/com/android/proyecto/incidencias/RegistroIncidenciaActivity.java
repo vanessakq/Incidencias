@@ -1,5 +1,6 @@
 package com.android.proyecto.incidencias;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -9,6 +10,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.proyecto.incidencias.database.IncidenciaDataSource;
+import com.android.proyecto.incidencias.database.UsuarioDataSource;
 import com.android.proyecto.incidencias.model.Incidencia;
 import com.android.proyecto.incidencias.model.Usuario;
 
@@ -19,7 +21,7 @@ public class RegistroIncidenciaActivity extends AppCompatActivity {
 
     private EditText mEdtTitulo;
 
-
+    private String mUsuario;
     private Incidencia mincidencia;
 
 
@@ -34,6 +36,10 @@ public class RegistroIncidenciaActivity extends AppCompatActivity {
         mEdtTitulo = (EditText) findViewById(R.id.inc_newTitulo);
 
         mincidencia = getIntent().getParcelableExtra("incidencia");
+        mUsuario = getIntent().getExtras().getString("UsuarioLogin");
+
+        Toast.makeText(this, "Que muestra esta variable _" + mUsuario + " - " , Toast.LENGTH_LONG).show();
+
         if (mincidencia != null){
             mEdtTitulo.setText(mincidencia.titulo);
         }
@@ -77,14 +83,22 @@ public class RegistroIncidenciaActivity extends AppCompatActivity {
     }
 
     private void registrarIncidencia() {
+        Intent intent = new Intent(this, IncidenciaActivity.class);
+        intent.putExtra("UsuarioLogin",mUsuario);
+
+
         Incidencia incidencia = new Incidencia();
         Usuario usuario = new Usuario();
         incidencia.titulo = mEdtTitulo.getText().toString();
+       // mUsuario.id;
 
         //BD
         IncidenciaDataSource dataSource = new IncidenciaDataSource(this);
-        Toast.makeText(this, "ENtro a funcion" + incidencia.titulo + "-", Toast.LENGTH_LONG).show();
-        //dataSource.insert(incidencia,musuario.id);
+        UsuarioDataSource dataSourceUsuario = new UsuarioDataSource(this);
+
+        int idUsuario = dataSourceUsuario.idUsuario(mUsuario);
+        dataSource.insert(incidencia,idUsuario);
         finish();
+        startActivity(intent);
     }
 }

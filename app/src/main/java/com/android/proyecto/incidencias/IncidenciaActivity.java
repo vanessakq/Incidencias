@@ -26,9 +26,11 @@ public class IncidenciaActivity extends AppCompatActivity implements AdapterView
     ArrayList<Incidencia> mIncidencias;
     private RecyclerView.Adapter<IncidenciaAdapter.ViewHolder> adapter;
 
-    private Usuario mUsuario;
+    private String mUsuario;
     private EditText mEdtTitulo;
     private static final  String TAG ="Entro a : ";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +39,8 @@ public class IncidenciaActivity extends AppCompatActivity implements AdapterView
         Toolbar toolbar = (Toolbar) findViewById(R.id.ToolBar);
         setSupportActionBar(toolbar);
 
+        mUsuario = getIntent().getExtras().getString("UsuarioLogin");
+        Toast.makeText(this, "Que muestra esta variable _" + mUsuario + " - " , Toast.LENGTH_LONG).show();
 
         mIncidencias = new ArrayList<Incidencia>();
         recView = (RecyclerView) findViewById(R.id.rcvi_AllIncidencias);
@@ -49,6 +53,7 @@ public class IncidenciaActivity extends AppCompatActivity implements AdapterView
         IncidenciaDataSource dataSource = new IncidenciaDataSource(this);
         mIncidencias.clear();
         mIncidencias.addAll(dataSource.list());
+
         adapter.notifyDataSetChanged();
 
     }
@@ -63,6 +68,7 @@ public class IncidenciaActivity extends AppCompatActivity implements AdapterView
     private void startRegistroIncidenciaActivity(){
         Log.d(TAG, "Entroooooooooooooooooooooooooooo");
         Intent intent = new Intent(this, RegistroIncidenciaActivity.class);
+        intent.putExtra("UsuarioLogin",mUsuario);
         startActivity(intent);
     }
     private void startSalirIncidencia(){

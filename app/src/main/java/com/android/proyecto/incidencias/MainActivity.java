@@ -63,6 +63,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 UsuarioLogeado = mTxt_LoginEmail.getText().toString();
                 Intent intent = new Intent(this, IncidenciaActivity.class);
+                intent.putExtra("UsuarioLogin",UsuarioLogeado);
+                Toast.makeText(this, "Login-mandaaaaaaaaaaa_"+ UsuarioLogeado, Toast.LENGTH_LONG).show();
                 startActivity(intent);
            }
            else

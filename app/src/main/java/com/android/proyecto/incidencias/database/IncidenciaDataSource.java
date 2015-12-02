@@ -28,13 +28,16 @@ public class IncidenciaDataSource {
     }
 
     public void insert(Incidencia incidencia , int id){
+        //String idValue = String.valueOf(id);
         ContentValues values = new ContentValues();
+
         values.put(DatabaseHelper.COLUMN_TITULO, incidencia.titulo);
         values.put(DatabaseHelper.COLUMN_COD_USUARIO, id);
+
         Log.d(TAG, "Inserto Exitooooooooooooooooooooooooooooooooooooooooooooo"+ incidencia.titulo);
-        Log.d(TAG, "Inserto Exitooooooooooooooooooooooooooooooooooooooooooooo"+ id);
+        Log.d(TAG, "Inserto Exitooooooooooooooooooooooooooooooooooooooooooooo" + id);
         mDatabase.insert(DatabaseHelper.TABLE_INCIDENCIA, null, values);
-        Log.d(TAG, "Inserto Exitooooooooooooooooooooooooooooooooooooooooooooo");
+
     }
 
     public List<Incidencia> list(){
@@ -49,9 +52,11 @@ public class IncidenciaDataSource {
             incidencia.id = cursor.getInt(cursor.getColumnIndex(BaseColumns._ID));
             incidencia.titulo = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_TITULO));
 
+            Log.d(TAG, "Inserto Exitooooooooooooooooooooooooooooooooooooooooooooo" + incidencia.id + " -- " +  incidencia.titulo);
             lstIncidencia.add(incidencia);
         }
         cursor.close();
+
         return lstIncidencia;
     }
 }
