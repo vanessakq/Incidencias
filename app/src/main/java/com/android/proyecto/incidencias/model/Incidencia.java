@@ -50,4 +50,8 @@ public class Incidencia implements Parcelable {
         dest.writeString(lugar);
         dest.writeString(contenido);
     }
+
+    public String getTitle() {
+        return titulo;
+    }
 }

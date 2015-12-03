@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -24,6 +25,7 @@ public class RegistroIncidenciaActivity extends AppCompatActivity {
     private String mUsuario;
     private Incidencia mincidencia;
 
+    private static final  String TAG ="Variable";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +81,7 @@ public class RegistroIncidenciaActivity extends AppCompatActivity {
     }
 
     private void editarIncidencia() {
-
+        Log.d(TAG, "Editar: " );
     }
 
     private void registrarIncidencia() {

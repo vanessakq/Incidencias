@@ -56,7 +56,7 @@ public class IncidenciaDataSource {
             lstIncidencia.add(incidencia);
         }
         cursor.close();
-
+        Log.d(TAG, "Manda la Información-------------> " + lstIncidencia);
         return lstIncidencia;
     }
 }

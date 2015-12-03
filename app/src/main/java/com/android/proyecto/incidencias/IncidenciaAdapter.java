@@ -2,6 +2,7 @@ package com.android.proyecto.incidencias;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.proyecto.incidencias.model.Incidencia;
 
@@ -18,63 +20,59 @@ import java.util.List;
 /**
  * Created by kate on 29/11/2015.
  */
-public class IncidenciaAdapter extends RecyclerView.Adapter<IncidenciaAdapter.ViewHolder> implements View.OnClickListener{
+public class IncidenciaAdapter extends  RecyclerView.Adapter<IncidenciaAdapter.FeedListRowHolder > {
+
 
     private static final  String TAG ="ListaAdapter";
-    private View.OnClickListener listener;
-    private ArrayList<Incidencia> objects;
+    private List<Incidencia> mDataset;
+    private static Context sContext;
 
-    public IncidenciaAdapter(ArrayList<Incidencia> objects) {
-        this.objects = objects;
+
+    // Adapter's Constructor
+    public IncidenciaAdapter( List<Incidencia>  mDataset) {
+        this.mDataset = mDataset;
+        //sContext = context;
     }
 
-    public static class TitularesViewHolder
-            extends RecyclerView.ViewHolder {
+    @Override
+    public FeedListRowHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_item_lista, parent, false);
+        //FeedListRowHolder  mh = new FeedListRowHolder (v);
+        return new FeedListRowHolder(v);
+    }
 
-        private TextView txtTitulo;
+    @Override
+    public void onBindViewHolder(FeedListRowHolder  holder, int position) {
+        Incidencia feedItem = mDataset.get(position);
+//        holder.textView.setText(Html.fromHtml(feedItem.titulo));
 
-        public TitularesViewHolder(View itemView) {
-            super(itemView);
-            txtTitulo = (TextView)itemView.findViewById(R.id.lbl_LstItmTitulo);
 
+        Log.d(TAG, "Entroooooooooooooooooooooooooooo: " + feedItem.getTitle());
+
+        try {
+            holder.textView.setText(Html.fromHtml(feedItem.getTitle()));
+        }
+        catch (Exception e){
+            Log.e(TAG,"Fatal Exception", e);
         }
 
-        public void bindTitular(Incidencia t) {
-            txtTitulo.setText(t.titulo);
-        }
-    }
-
-
-    public void setOnClickListener(View.OnClickListener listener) {
-        this.listener = listener;
-    }
-    @Override
-    public void onClick(View v) {
-        if(listener != null)
-            listener.onClick(v);
-    }
-
-    @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return null;
-    }
-
-    @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
 
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return (null != mDataset ? mDataset.size() : 0);
     }
 
-    public static class  ViewHolder extends RecyclerView.ViewHolder {
-        public ImageView imageView;
-        public TextView txtTitle;
 
-        public ViewHolder(View itemView) {
-            super(itemView);
+    public class FeedListRowHolder  extends RecyclerView.ViewHolder {
+        protected TextView textView;
+
+        public FeedListRowHolder (View view) {
+            super(view);
+
+            textView = (TextView)itemView.findViewById(R.id.lbl_LstItmTitulo);
+            Log.d(TAG, "Entroooooooooooooooooooooooooooo: " + textView);
         }
     }
 }
