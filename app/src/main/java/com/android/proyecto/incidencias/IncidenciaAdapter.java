@@ -20,7 +20,9 @@ import java.util.List;
 /**
  * Created by kate on 29/11/2015.
  */
-public class IncidenciaAdapter extends  RecyclerView.Adapter<IncidenciaAdapter.FeedListRowHolder > {
+public class IncidenciaAdapter extends  RecyclerView.Adapter<IncidenciaAdapter.FeedListRowHolder > implements View.OnClickListener{
+
+    private View.OnClickListener listener;
 
 
     private static final  String TAG ="ListaAdapter";
@@ -37,7 +39,7 @@ public class IncidenciaAdapter extends  RecyclerView.Adapter<IncidenciaAdapter.F
     @Override
     public FeedListRowHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_item_lista, parent, false);
-        //FeedListRowHolder  mh = new FeedListRowHolder (v);
+        v.setOnClickListener(this);
         return new FeedListRowHolder(v);
     }
 
@@ -74,5 +76,14 @@ public class IncidenciaAdapter extends  RecyclerView.Adapter<IncidenciaAdapter.F
             textView = (TextView)itemView.findViewById(R.id.lbl_LstItmTitulo);
             Log.d(TAG, "Entroooooooooooooooooooooooooooo: " + textView);
         }
+    }
+    public void setOnClickListener(View.OnClickListener listener) {
+        this.listener = listener;
+    }
+
+    @Override
+    public void onClick(View view) {
+        if(listener != null)
+            listener.onClick(view);
     }
 }

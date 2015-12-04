@@ -59,4 +59,39 @@ public class IncidenciaDataSource {
         Log.d(TAG, "Manda la Información-------------> " + lstIncidencia);
         return lstIncidencia;
     }
+
+    public void update(Incidencia incidencia ){
+        ContentValues values = new ContentValues();
+        values.put(DatabaseHelper.COLUMN_TITULO, incidencia.titulo);
+        Log.d(TAG, "Inserto Exitooooooooooooooooooooooooooooooooooooooooooooo" + incidencia.titulo + " -- " + incidencia.id);
+        String whereClause = BaseColumns._ID + " =?";
+        String[] whereArgs = {String.valueOf(incidencia.id)};
+
+        mDatabase.update(DatabaseHelper.TABLE_INCIDENCIA, values, whereClause, whereArgs);
+
+    }
+    public List<Incidencia> listUser(int id){
+        String[] columns = {
+                BaseColumns._ID,
+                DatabaseHelper.COLUMN_TITULO
+        };
+
+        String whereClause = DatabaseHelper.COLUMN_COD_USUARIO + " =?";
+        String[] whereArgs = {String.valueOf(id)};
+
+        Cursor cursor = mDatabase.query(DatabaseHelper.TABLE_INCIDENCIA,columns,whereClause,whereArgs,null,null,null);
+
+        List<Incidencia> lstIncidencia = new ArrayList<>();
+        while (cursor.moveToNext()){
+            Incidencia incidencia = new Incidencia();
+            incidencia.id = cursor.getInt(cursor.getColumnIndex(BaseColumns._ID));
+            incidencia.titulo = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_TITULO));
+
+            Log.d(TAG, "Inserto Exitooooooooooooooooooooooooooooooooooooooooooooo" + incidencia.id + " -- " +  incidencia.titulo);
+            lstIncidencia.add(incidencia);
+        }
+        cursor.close();
+        Log.d(TAG, "Manda la Información-------------> " + lstIncidencia);
+        return lstIncidencia;
+    }
 }

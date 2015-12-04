@@ -40,7 +40,7 @@ public class RegistroIncidenciaActivity extends AppCompatActivity {
         mincidencia = getIntent().getParcelableExtra("incidencia");
         mUsuario = getIntent().getExtras().getString("UsuarioLogin");
 
-        Toast.makeText(this, "Que muestra esta variable _" + mUsuario + " - " , Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Que muestra esta variable _" + mincidencia.id + " - " , Toast.LENGTH_LONG).show();
 
         if (mincidencia != null){
             mEdtTitulo.setText(mincidencia.titulo);
@@ -81,7 +81,13 @@ public class RegistroIncidenciaActivity extends AppCompatActivity {
     }
 
     private void editarIncidencia() {
-        Log.d(TAG, "Editar: " );
+        mincidencia.titulo = mEdtTitulo.getText().toString();
+
+        //BD
+        IncidenciaDataSource dataSource = new IncidenciaDataSource(this);
+        dataSource.update(mincidencia);
+        finish();
+
     }
 
     private void registrarIncidencia() {
