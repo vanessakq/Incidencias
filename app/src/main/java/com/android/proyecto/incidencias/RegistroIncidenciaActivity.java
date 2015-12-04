@@ -1,6 +1,7 @@
 package com.android.proyecto.incidencias;
 
 import android.content.Intent;
+import android.location.LocationListener;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -18,7 +19,7 @@ import com.android.proyecto.incidencias.model.Usuario;
 /**
  * Created by kquispe on 30/11/2015.
  */
-public class RegistroIncidenciaActivity extends AppCompatActivity {
+public class RegistroIncidenciaActivity extends AppCompatActivity  {
 
     private EditText mEdtTitulo;
 
