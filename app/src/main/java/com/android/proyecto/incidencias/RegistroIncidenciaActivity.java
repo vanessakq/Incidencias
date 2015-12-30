@@ -17,20 +17,17 @@ import com.android.proyecto.incidencias.database.IncidenciaDataSource;
 import com.android.proyecto.incidencias.database.UsuarioDataSource;
 import com.android.proyecto.incidencias.model.Incidencia;
 import com.android.proyecto.incidencias.model.Usuario;
-
-import java.util.Calendar;
-
 /**
  * Created by kquispe on 30/11/2015.
  */
 public class RegistroIncidenciaActivity extends AppCompatActivity  {
 
+    private static final  String TAG ="Variable";
     private EditText mEdtTitulo;
-
+    private EditText mEdtContenido;
+    private String mFecha;
     private String mUsuario;
     private Incidencia mincidencia;
-
-    private static final  String TAG ="Variable";
 
     //Variable para el combo de tipos de incidentes
     private Spinner mEdtTipo;
@@ -42,22 +39,21 @@ public class RegistroIncidenciaActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_registro_incidencia);
 
         //tipos de incidente
-        mEdtTipo = (Spinner) findViewById(R.id.spinner);
+        mEdtTipo = (Spinner) findViewById(R.id.inc_tipo);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, datos);
         mEdtTipo.setAdapter(adapter);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.ToolBar);
         setSupportActionBar(toolbar);
 
-        mEdtTitulo = (EditText) findViewById(R.id.inc_newTitulo);
+        mEdtTitulo = (EditText) findViewById(R.id.inc_titulo);
+        mEdtContenido = (EditText) findViewById(R.id.inc_contenido);
 
         mincidencia = getIntent().getParcelableExtra("incidencia");
         mUsuario = getIntent().getExtras().getString("UsuarioLogin");
 
-        Calendar c = Calendar.getInstance();
-        System.out.println("Current time =&gt; "+c.getTime());
 
-        Toast.makeText(this, "Que muestra esta variable _" + " - " , Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, "Que muestra esta variable _" + " - " , Toast.LENGTH_LONG).show();
 
         if (mincidencia != null){
             mEdtTitulo.setText(mincidencia.titulo);
@@ -116,6 +112,7 @@ public class RegistroIncidenciaActivity extends AppCompatActivity  {
         Usuario usuario = new Usuario();
         incidencia.titulo = mEdtTitulo.getText().toString();
         incidencia.tipo = mEdtTipo.getSelectedItem().toString();
+        incidencia.contenido = mEdtContenido.getText().toString();
        // mUsuario.id;
 
         //BD

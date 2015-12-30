@@ -17,17 +17,27 @@
 
 
             <EditText
-                android:id="@+id/inc_newTitulo"
+                android:id="@+id/inc_titulo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text"
                 android:hint="Título"
                 />
 
-        <Spinner
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/spinner" />
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/inc_tipo"
+                />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:ems="10"
+                android:id="@+id/inc_contenido"
+                android:hint="Contenido"
+                />
 
 
     </LinearLayout>

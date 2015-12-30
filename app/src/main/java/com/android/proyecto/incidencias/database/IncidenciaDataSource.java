@@ -10,7 +10,9 @@ import android.util.Log;
 import com.android.proyecto.incidencias.model.Incidencia;
 import com.android.proyecto.incidencias.model.Usuario;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -29,13 +31,19 @@ public class IncidenciaDataSource {
 
     public void insert(Incidencia incidencia , int id){
         //String idValue = String.valueOf(id);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+
         ContentValues values = new ContentValues();
 
         values.put(DatabaseHelper.COLUMN_TITULO, incidencia.titulo);
+        values.put(DatabaseHelper.COLUMN_CONTENIDO, incidencia.contenido);
+        values.put(DatabaseHelper.COLUMN_TIPO, incidencia.tipo);
+        values.put(DatabaseHelper.COLUMN_FECHA, sdf.format(new Date()));
         values.put(DatabaseHelper.COLUMN_COD_USUARIO, id);
 
-        Log.d(TAG, "Inserto Exitooooooooooooooooooooooooooooooooooooooooooooo"+ incidencia.titulo);
-        Log.d(TAG, "Inserto Exitooooooooooooooooooooooooooooooooooooooooooooo" + id);
+        //Log.d(TAG, "Inserto Exitooooooooooooooooooooooooooooooooooooooooooooo"+ incidencia.titulo);
+        //Log.d(TAG, "Inserto Exitooooooooooooooooooooooooooooooooooooooooooooo" + id);
         mDatabase.insert(DatabaseHelper.TABLE_INCIDENCIA, null, values);
 
     }
@@ -43,7 +51,10 @@ public class IncidenciaDataSource {
     public List<Incidencia> list(){
         String[] columns = {
                 BaseColumns._ID,
-                DatabaseHelper.COLUMN_TITULO
+                DatabaseHelper.COLUMN_TITULO,
+                DatabaseHelper.COLUMN_TIPO,
+                DatabaseHelper.COLUMN_CONTENIDO,
+                DatabaseHelper.COLUMN_FECHA
         };
         Cursor cursor = mDatabase.query(DatabaseHelper.TABLE_INCIDENCIA,columns,null,null,null,null,null);
         List<Incidencia> lstIncidencia = new ArrayList<>();
@@ -51,8 +62,11 @@ public class IncidenciaDataSource {
             Incidencia incidencia = new Incidencia();
             incidencia.id = cursor.getInt(cursor.getColumnIndex(BaseColumns._ID));
             incidencia.titulo = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_TITULO));
+            incidencia.tipo = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_TIPO));
+            incidencia.contenido = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_CONTENIDO));
+            incidencia.fecha = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_FECHA));
 
-            Log.d(TAG, "Inserto Exitooooooooooooooooooooooooooooooooooooooooooooo" + incidencia.id + " -- " +  incidencia.titulo);
+            //Log.d(TAG, "Inserto Exitooooooooooooooooooooooooooooooooooooooooooooo" + incidencia.id + " -- " +  incidencia.titulo);
             lstIncidencia.add(incidencia);
         }
         cursor.close();
