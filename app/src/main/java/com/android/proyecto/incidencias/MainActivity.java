@@ -12,6 +12,9 @@ import android.widget.Toast;
 import com.android.proyecto.incidencias.database.UsuarioDataSource;
 import com.android.proyecto.incidencias.model.Usuario;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
 
@@ -52,25 +55,49 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         return valid;
     }
+
+    public static boolean isEmailValid(String email) {
+        boolean isValid = false;
+
+        String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+        CharSequence inputStr = email;
+
+        Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(inputStr);
+        if (matcher.matches()) {
+            isValid = true;
+        }
+        return isValid;
+    }
+
     private void startListaAllActivity(){
         if (validateFields()) {
             String correo = mTxt_LoginEmail.getText().toString();
             String clave = mTxt_LoginContrasena.getText().toString();
             UsuarioDataSource dataSource = new UsuarioDataSource(this);
             String storedPassword = dataSource.validarusuario(correo);
-            if(clave.equals(storedPassword))
-            {
 
-                UsuarioLogeado = mTxt_LoginEmail.getText().toString();
-                Intent intent = new Intent(this, IncidenciaActivity.class);
-                intent.putExtra("UsuarioLogin",UsuarioLogeado);
-                Toast.makeText(this, "Login-mandaaaaaaaaaaa_"+ UsuarioLogeado, Toast.LENGTH_LONG).show();
-                startActivity(intent);
-           }
-           else
-            {
-                Toast.makeText(this, "Login Incorrecto", Toast.LENGTH_LONG).show();
+            if(isEmailValid(correo)){
+                if(clave.equals(storedPassword))
+                {
+
+                    UsuarioLogeado = mTxt_LoginEmail.getText().toString();
+                    Intent intent = new Intent(this, IncidenciaActivity.class);
+                    intent.putExtra("UsuarioLogin",UsuarioLogeado);
+                    Toast.makeText(this, "Login-mandaaaaaaaaaaa_"+ UsuarioLogeado, Toast.LENGTH_LONG).show();
+                    startActivity(intent);
+                }
+                else
+                {
+                    Toast.makeText(this, "Login Incorrecto", Toast.LENGTH_LONG).show();
+                }
             }
+            else
+            {
+                Toast.makeText(this, "Ingrese un correo correcto (correo@mail.com).", Toast.LENGTH_LONG).show();
+            }
+
+
         }
     }
     private void startRegistrarActivity(){

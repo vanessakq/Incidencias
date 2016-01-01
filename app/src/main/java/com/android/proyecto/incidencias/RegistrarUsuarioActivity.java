@@ -14,6 +14,9 @@ import com.android.proyecto.incidencias.database.UsuarioDataSource;
 import com.android.proyecto.incidencias.model.Incidencia;
 import com.android.proyecto.incidencias.model.Usuario;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class RegistrarUsuarioActivity extends AppCompatActivity implements View.OnClickListener{
     private EditText mEdtCorreo, mEdtPass, mEditUsuario;
 
@@ -66,6 +69,20 @@ public class RegistrarUsuarioActivity extends AppCompatActivity implements View.
         return valid;
     }
 
+    public static boolean isEmailValid(String email) {
+        boolean isValid = false;
+
+        String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+        CharSequence inputStr = email;
+
+        Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(inputStr);
+        if (matcher.matches()) {
+            isValid = true;
+        }
+        return isValid;
+    }
+
     private void startRegistrarUsuario(){
         if (validateFields()) {
             Usuario usuario = new Usuario();
@@ -76,15 +93,27 @@ public class RegistrarUsuarioActivity extends AppCompatActivity implements View.
             String claveNueva = mEdtPass.getText().toString();
             UsuarioDataSource dataSource = new UsuarioDataSource(this);
             String storedPassword = dataSource.validarusuario(correoNuevo);
-            if(claveNueva.equals(storedPassword))
-            {
-                Toast.makeText(this, "Usuario ya ingresado", Toast.LENGTH_LONG).show();
+
+            if(isEmailValid(correoNuevo)){
+                if(storedPassword.equals("NOT EXIST")){
+                    dataSource.insert(usuario);
+                    Toast.makeText(this, "Usuario registrado correctamente.", Toast.LENGTH_LONG).show();
+                    finish();
+                }else
+                {
+                    Toast.makeText(this, "El correo ya se encuentra en uso, por favor ingrese otro.", Toast.LENGTH_LONG).show();
+                }
+            }else{
+                Toast.makeText(this, "Ingrese un correo correcto (correo@mail.com).", Toast.LENGTH_LONG).show();
             }
-            else
-            {
-                dataSource.insert(usuario);
-            }
-            finish();
+
+
+
+
+
+
+
+
         }
     }
     private void startRegresarLogin(){
