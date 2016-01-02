@@ -73,7 +73,7 @@ public class IncidenciaAdapter extends  RecyclerView.Adapter<IncidenciaAdapter.F
         public FeedListRowHolder (View view) {
             super(view);
 
-            textView = (TextView)itemView.findViewById(R.id.lbl_LstItmTitulo);
+            textView = (TextView)view.findViewById(R.id.lbl_LstItmTitulo);
             Log.d(TAG, "Entroooooooooooooooooooooooooooo: " + textView);
         }
     }

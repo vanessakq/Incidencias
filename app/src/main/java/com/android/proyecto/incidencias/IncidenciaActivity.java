@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.android.proyecto.incidencias.database.IncidenciaDataSource;
@@ -36,7 +37,9 @@ public class IncidenciaActivity extends AppCompatActivity  {
     //Variable Comentario
     private static final  String TAG ="Entro a : ";
 
-
+    private IncidenciaDataSource dataSource;
+    private Button btnAll;
+    private String strName = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +62,7 @@ public class IncidenciaActivity extends AppCompatActivity  {
         recView.setLayoutManager(new LinearLayoutManager(recView.getContext()));
         adaptador = new IncidenciaAdapter(mIncidencias);
 
-        if (mUsuario != null){
+        /*if (mUsuario != null){*/
         adaptador.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,28 +71,28 @@ public class IncidenciaActivity extends AppCompatActivity  {
                 editarRecycler(v);
             }
         });
-        }
+        /*}*/
         recView.setAdapter(adaptador);
 
     }
 
     protected void onResume() {
         super.onResume();
-        IncidenciaDataSource dataSource = new IncidenciaDataSource(this);
+        dataSource = new IncidenciaDataSource(this);
         mIncidencias.clear();
 
-        if (mUsuario != null){
+       /* if (strName == null){*/
             Log.d(TAG, "Cambio de Usuario Vacio" + mUsuario);
             UsuarioDataSource dataSourceUser = new UsuarioDataSource(this);
             int idUsuario = dataSourceUser.idUsuario(mUsuario);
             Log.d(TAG, "Cambio de Usuario Vacio" + idUsuario);
             mIncidencias.addAll(dataSource.listUser(idUsuario));
-        }
+        /*}
         else{
             int idUsuario = 0;
             Log.d(TAG, "Cambio de Usuario Vacio" + mUsuario);
             mIncidencias.addAll(dataSource.list());
-        }
+        }*/
         adaptador.notifyDataSetChanged();
 
     }
@@ -97,17 +100,17 @@ public class IncidenciaActivity extends AppCompatActivity  {
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         int menuResId;
-        if (mUsuario != null) {
+        /*if (mUsuario != null) {*/
             menuResId = R.menu.mis_incidencias;
             getMenuInflater().inflate(menuResId, menu);
-        }
+       /* }*/
         return super.onCreateOptionsMenu(menu);
     }
 
     private void startRegistroIncidenciaActivity(){
         Log.d(TAG, "Entroooooooooooooooooooooooooooo");
         Intent intent = new Intent(this, RegistroIncidenciaActivity.class);
-        intent.putExtra("UsuarioLogin",mUsuario);
+        intent.putExtra("UsuarioLogin", mUsuario);
         startActivity(intent);
     }
     private void startSalirIncidencia(){
@@ -115,11 +118,14 @@ public class IncidenciaActivity extends AppCompatActivity  {
         startActivity(intent);
     }
     private void startRecyclerAll(){
-        String strName = null;
-        Intent intent = new Intent(this, IncidenciaActivity.class);
-        //Log.d(TAG, "Cambio de Usuario Vacio" + mUsuario);
+        String strName = "Todas";
+        mIncidencias.clear();
+        mIncidencias.addAll(dataSource.list());
+        adaptador.notifyDataSetChanged();
+
+       /* Intent intent = new Intent(this, IncidenciaActivity.class);
         intent.putExtra("UsuarioLogin",strName);
-        startActivity(intent);
+        startActivity(intent);*/
     }
 
 
@@ -144,7 +150,7 @@ public class IncidenciaActivity extends AppCompatActivity  {
         Intent intent = new Intent(this, RegistroIncidenciaActivity.class);
         intent.putExtra("UsuarioLogin", mUsuario);
         Log.d(TAG, "The Item Clicked is2: " + recView.getChildPosition(v) + mIncidencias.get(recView.getChildPosition(v)).titulo + " -- " +  mIncidencias.get(recView.getChildPosition(v)).id);
-        intent.putExtra("incidencia",mIncidencias.get(recView.getChildPosition(v)));
+        intent.putExtra("incidencia", mIncidencias.get(recView.getChildPosition(v)));
         startActivity(intent);
     }
 
