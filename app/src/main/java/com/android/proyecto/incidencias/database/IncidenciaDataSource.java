@@ -70,52 +70,9 @@ public class IncidenciaDataSource {
             incidencia.fecha = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_FECHA));
 
             String nom = nomUsuario(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_COD_USUARIO)));
-
             String fec = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_FECHA));
 
-            Calendar cal1 = Calendar.getInstance();
-            Calendar cal2 = Calendar.getInstance();
-            cal1.setTime(new Date());
-
-            SimpleDateFormat myFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-
-            Date fecha = null;
-
-            try {
-
-                fecha = myFormat.parse(fec);
-                cal2.setTime(fecha);
-
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-
-            long milis1 = cal1.getTimeInMillis();
-            long milis2 = cal2.getTimeInMillis();
-            long diff = milis1 - milis2;
-
-            String strFecha = "";
-
-            if(diff >= (24 * 60 * 60 * 1000)){//Mayor a 1 dia
-                strFecha = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_FECHA));
-            }
-            else{
-                if(diff >= (60 * 60 * 1000)){
-                    long diffHours = diff / (60 * 60 * 1000);
-                    strFecha = Long.toString(diffHours) + " h";
-                }
-                else{
-                    if(diff >= (60 * 1000)){
-                        long diffMinutes = diff / (60 * 1000);
-                        strFecha = Long.toString(diffMinutes) + " min";
-                    }
-                    else{
-                        strFecha = "Ahora";
-                    }
-                }
-            }
-
-            incidencia.fecha = strFecha;
+            incidencia.fecha = obteherFecha(fec);
             incidencia.creador = nom;
             lstIncidencia.add(incidencia);
         }
@@ -161,49 +118,7 @@ public class IncidenciaDataSource {
 
             String fec = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_FECHA));
 
-            Calendar cal1 = Calendar.getInstance();
-            Calendar cal2 = Calendar.getInstance();
-            cal1.setTime(new Date());
-
-            SimpleDateFormat myFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-
-            Date fecha = null;
-
-            try {
-
-                fecha = myFormat.parse(fec);
-                cal2.setTime(fecha);
-
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-
-            long milis1 = cal1.getTimeInMillis();
-            long milis2 = cal2.getTimeInMillis();
-            long diff = milis1 - milis2;
-
-            String strFecha = "";
-
-            if(diff >= (24 * 60 * 60 * 1000)){//Mayor a 1 dia
-                strFecha = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_FECHA));
-            }
-            else{
-                if(diff >= (60 * 60 * 1000)){
-                    long diffHours = diff / (60 * 60 * 1000);
-                    strFecha = Long.toString(diffHours) + " h";
-                }
-                else{
-                    if(diff >= (60 * 1000)){
-                        long diffMinutes = diff / (60 * 1000);
-                        strFecha = Long.toString(diffMinutes) + " min";
-                    }
-                    else{
-                        strFecha = "Ahora";
-                    }
-                }
-            }
-
-            incidencia.fecha = strFecha;
+            incidencia.fecha = obteherFecha(fec);
 
             incidencia.creador = nom;
 
@@ -222,6 +137,53 @@ public class IncidenciaDataSource {
 
         Log.d(TAG, "Nombre usuario en Incidencia " + nombre);
         return nombre;
+    }
+
+    public String obteherFecha(String fec){
+
+        Calendar cal1 = Calendar.getInstance();
+        Calendar cal2 = Calendar.getInstance();
+        cal1.setTime(new Date());
+
+        SimpleDateFormat myFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+
+        Date fecha = null;
+
+        try {
+
+            fecha = myFormat.parse(fec);
+            cal2.setTime(fecha);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        long milis1 = cal1.getTimeInMillis();
+        long milis2 = cal2.getTimeInMillis();
+        long diff = milis1 - milis2;
+
+        String strFecha = "";
+
+        if(diff >= (24 * 60 * 60 * 1000)){//Mayor a 1 dia
+            strFecha = fec;
+        }
+        else{
+            if(diff >= (60 * 60 * 1000)){
+                long diffHours = diff / (60 * 60 * 1000);
+                strFecha = Long.toString(diffHours) + " h";
+            }
+            else{
+                if(diff >= (60 * 1000)){
+                    long diffMinutes = diff / (60 * 1000);
+                    strFecha = Long.toString(diffMinutes) + " min";
+                }
+                else{
+                    strFecha = "Ahora";
+                }
+            }
+        }
+
+        return strFecha;
     }
 
 }

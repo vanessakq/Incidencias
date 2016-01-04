@@ -53,5 +53,24 @@
             android:layout_height="wrap_content"
             android:textStyle="normal"
             android:textSize="12sp" />
+
+        <TextView android:id="@+id/Lbl_LstItmContenido"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="normal"
+            android:visibility="invisible"
+            android:textSize="12sp" />
+        <TextView android:id="@+id/Lbl_LstItmLatitud"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="normal"
+            android:visibility="invisible"
+            android:textSize="12sp" />
+        <TextView android:id="@+id/Lbl_LstItmLongitud"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="normal"
+            android:visibility="invisible"
+            android:textSize="12sp" />
     </LinearLayout>
 </LinearLayout>

@@ -51,23 +51,12 @@ public class IncidenciaAdapter extends  RecyclerView.Adapter<IncidenciaAdapter.F
     public void onBindViewHolder(FeedListRowHolder  holder, int position) {
         Incidencia feedItem = mDataset.get(position);
 
-        Log.d(TAG, "Entroooooooooooooooooooooooooooo: " + feedItem.getTitulo());
-
         try {
             holder.textView.setText(Html.fromHtml(feedItem.getTitulo()));
             holder.txtFecha.setText(Html.fromHtml(feedItem.getFecha()));
             holder.txtTipo.setText(Html.fromHtml(feedItem.getTipo()));
-
+            holder.txtContenido.setText(Html.fromHtml(feedItem.getContenido()));
             holder.txtUsuario.setText(Html.fromHtml(feedItem.getCreador()));
-
-
-
-
-
-
-
-
-
         }
         catch (Exception e){
             Log.e(TAG,"Fatal Exception", e);
@@ -86,6 +75,7 @@ public class IncidenciaAdapter extends  RecyclerView.Adapter<IncidenciaAdapter.F
         protected TextView textView;
         protected TextView txtFecha;
         protected TextView txtTipo;
+        protected TextView txtContenido;
         protected TextView txtUsuario;
 
 
@@ -95,6 +85,7 @@ public class IncidenciaAdapter extends  RecyclerView.Adapter<IncidenciaAdapter.F
             textView = (TextView)view.findViewById(R.id.lbl_LstItmTitulo);
             txtFecha = (TextView)view.findViewById(R.id.Lbl_LstItmFecha);
             txtTipo = (TextView)view.findViewById(R.id.Lbl_LstItmTipo);
+            txtContenido = (TextView)view.findViewById(R.id.Lbl_LstItmContenido);
             txtUsuario = (TextView)view.findViewById(R.id.Lbl_LstItmAutor);
         }
     }

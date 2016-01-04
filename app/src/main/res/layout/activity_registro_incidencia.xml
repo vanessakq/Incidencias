@@ -39,6 +39,15 @@
                 android:hint="Contenido"
                 />
 
+            <TextView
+                android:id="@+id/inc_fecha"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                />
+
+
+
 
     </LinearLayout>
 </LinearLayout>

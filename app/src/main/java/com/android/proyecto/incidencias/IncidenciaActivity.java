@@ -34,6 +34,9 @@ public class IncidenciaActivity extends AppCompatActivity  {
     private IncidenciaAdapter adaptador;
 
     private TextView txtTitulo;
+    private TextView txtFecha;
+    private TextView txtTipo;
+    private TextView txtContenido;
     //Variable Comentario
     private static final  String TAG ="Entro a : ";
 
@@ -62,16 +65,20 @@ public class IncidenciaActivity extends AppCompatActivity  {
         recView.setLayoutManager(new LinearLayoutManager(recView.getContext()));
         adaptador = new IncidenciaAdapter(mIncidencias);
 
-        /*if (mUsuario != null){*/
+
         adaptador.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 txtTitulo = (TextView) findViewById(R.id.lbl_LstItmTitulo);
-                Log.d(TAG, "The Item Clicked is: " + recView.getChildPosition(v) + mIncidencias.get(recView.getChildPosition(v)).titulo);
+                txtFecha = (TextView) findViewById(R.id.Lbl_LstItmFecha);
+                txtTipo = (TextView) findViewById(R.id.Lbl_LstItmTipo);
+                txtContenido = (TextView) findViewById(R.id.Lbl_LstItmContenido);
+
+                //Log.d(TAG, "The Item Clicked is: " + recView.getChildPosition(v) + mIncidencias.get(recView.getChildPosition(v)).titulo);
                 editarRecycler(v);
             }
         });
-        /*}*/
+
         recView.setAdapter(adaptador);
 
     }
@@ -81,18 +88,12 @@ public class IncidenciaActivity extends AppCompatActivity  {
         dataSource = new IncidenciaDataSource(this);
         mIncidencias.clear();
 
-       /* if (strName == null){*/
-            Log.d(TAG, "Cambio de Usuario Vacio" + mUsuario);
-            UsuarioDataSource dataSourceUser = new UsuarioDataSource(this);
-            int idUsuario = dataSourceUser.idUsuario(mUsuario);
-            Log.d(TAG, "Cambio de Usuario Vacio" + idUsuario);
-            mIncidencias.addAll(dataSource.listUser(idUsuario));
-        /*}
-        else{
-            int idUsuario = 0;
-            Log.d(TAG, "Cambio de Usuario Vacio" + mUsuario);
-            mIncidencias.addAll(dataSource.list());
-        }*/
+        Log.d(TAG, "Cambio de Usuario Vacio" + mUsuario);
+        UsuarioDataSource dataSourceUser = new UsuarioDataSource(this);
+        int idUsuario = dataSourceUser.idUsuario(mUsuario);
+        Log.d(TAG, "Cambio de Usuario Vacio" + idUsuario);
+        mIncidencias.addAll(dataSource.listUser(idUsuario));
+
         adaptador.notifyDataSetChanged();
 
     }
@@ -100,15 +101,12 @@ public class IncidenciaActivity extends AppCompatActivity  {
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         int menuResId;
-        /*if (mUsuario != null) {*/
-            menuResId = R.menu.mis_incidencias;
-            getMenuInflater().inflate(menuResId, menu);
-       /* }*/
+        menuResId = R.menu.mis_incidencias;
+        getMenuInflater().inflate(menuResId, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
     private void startRegistroIncidenciaActivity(){
-        Log.d(TAG, "Entroooooooooooooooooooooooooooo");
         Intent intent = new Intent(this, RegistroIncidenciaActivity.class);
         intent.putExtra("UsuarioLogin", mUsuario);
         startActivity(intent);
@@ -122,10 +120,6 @@ public class IncidenciaActivity extends AppCompatActivity  {
         mIncidencias.clear();
         mIncidencias.addAll(dataSource.list());
         adaptador.notifyDataSetChanged();
-
-       /* Intent intent = new Intent(this, IncidenciaActivity.class);
-        intent.putExtra("UsuarioLogin",strName);
-        startActivity(intent);*/
     }
 
 

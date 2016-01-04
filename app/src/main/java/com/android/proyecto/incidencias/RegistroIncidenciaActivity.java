@@ -55,6 +55,7 @@ public class RegistroIncidenciaActivity extends AppCompatActivity  {
 
         if (mincidencia != null){
             mEdtTitulo.setText(mincidencia.titulo);
+            mEdtContenido.setText(mincidencia.contenido);
         }
     }
 
