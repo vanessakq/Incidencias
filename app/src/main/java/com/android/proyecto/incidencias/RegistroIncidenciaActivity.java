@@ -9,6 +9,8 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
+
 import com.android.proyecto.incidencias.database.IncidenciaDataSource;
 import com.android.proyecto.incidencias.database.UsuarioDataSource;
 import com.android.proyecto.incidencias.model.Incidencia;
@@ -117,6 +119,7 @@ public class RegistroIncidenciaActivity extends AppCompatActivity  {
 
         int idUsuario = dataSourceUsuario.idUsuario(mUsuario);
         dataSource.insert(incidencia,idUsuario);
+        Toast.makeText(this, "Incidencia registrada correctamente.", Toast.LENGTH_LONG).show();
         finish();
         startActivity(intent);
     }

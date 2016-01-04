@@ -12,9 +12,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.proyecto.incidencias.database.UsuarioDataSource;
 import com.android.proyecto.incidencias.model.Incidencia;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -28,7 +32,7 @@ public class IncidenciaAdapter extends  RecyclerView.Adapter<IncidenciaAdapter.F
     private static final  String TAG ="ListaAdapter";
     private List<Incidencia> mDataset;
     private static Context sContext;
-
+    private UsuarioDataSource dataSource;
 
     // Adapter's Constructor
     public IncidenciaAdapter( List<Incidencia>  mDataset) {
@@ -46,13 +50,24 @@ public class IncidenciaAdapter extends  RecyclerView.Adapter<IncidenciaAdapter.F
     @Override
     public void onBindViewHolder(FeedListRowHolder  holder, int position) {
         Incidencia feedItem = mDataset.get(position);
-//        holder.textView.setText(Html.fromHtml(feedItem.titulo));
 
-
-        Log.d(TAG, "Entroooooooooooooooooooooooooooo: " + feedItem.getTitle());
+        Log.d(TAG, "Entroooooooooooooooooooooooooooo: " + feedItem.getTitulo());
 
         try {
-            holder.textView.setText(Html.fromHtml(feedItem.getTitle()));
+            holder.textView.setText(Html.fromHtml(feedItem.getTitulo()));
+            holder.txtFecha.setText(Html.fromHtml(feedItem.getFecha()));
+            holder.txtTipo.setText(Html.fromHtml(feedItem.getTipo()));
+
+            holder.txtUsuario.setText(Html.fromHtml(feedItem.getCreador()));
+
+
+
+
+
+
+
+
+
         }
         catch (Exception e){
             Log.e(TAG,"Fatal Exception", e);
@@ -69,12 +84,18 @@ public class IncidenciaAdapter extends  RecyclerView.Adapter<IncidenciaAdapter.F
 
     public class FeedListRowHolder  extends RecyclerView.ViewHolder {
         protected TextView textView;
+        protected TextView txtFecha;
+        protected TextView txtTipo;
+        protected TextView txtUsuario;
+
 
         public FeedListRowHolder (View view) {
             super(view);
 
             textView = (TextView)view.findViewById(R.id.lbl_LstItmTitulo);
-            Log.d(TAG, "Entroooooooooooooooooooooooooooo: " + textView);
+            txtFecha = (TextView)view.findViewById(R.id.Lbl_LstItmFecha);
+            txtTipo = (TextView)view.findViewById(R.id.Lbl_LstItmTipo);
+            txtUsuario = (TextView)view.findViewById(R.id.Lbl_LstItmAutor);
         }
     }
     public void setOnClickListener(View.OnClickListener listener) {
