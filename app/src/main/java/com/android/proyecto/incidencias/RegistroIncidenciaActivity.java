@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.proyecto.incidencias.database.IncidenciaDataSource;
@@ -25,6 +26,7 @@ public class RegistroIncidenciaActivity extends AppCompatActivity  {
     private EditText mEdtContenido;
     private String mFecha;
     private String mUsuario;
+    private TextView mFec;
     private Incidencia mincidencia;
 
     //Variable para el combo de tipos de incidentes
@@ -46,7 +48,7 @@ public class RegistroIncidenciaActivity extends AppCompatActivity  {
 
         mEdtTitulo = (EditText) findViewById(R.id.inc_titulo);
         mEdtContenido = (EditText) findViewById(R.id.inc_contenido);
-
+        mFec = (TextView) findViewById(R.id.inc_fecha);
         mincidencia = getIntent().getParcelableExtra("incidencia");
         mUsuario = getIntent().getExtras().getString("UsuarioLogin");
 
@@ -56,6 +58,13 @@ public class RegistroIncidenciaActivity extends AppCompatActivity  {
         if (mincidencia != null){
             mEdtTitulo.setText(mincidencia.titulo);
             mEdtContenido.setText(mincidencia.contenido);
+            mFec.setText(mincidencia.fecha);
+
+            String compareValue = mincidencia.tipo;
+            if (!compareValue.equals(null)) {
+                int spinnerPosition = adapter.getPosition(compareValue);
+                mEdtTipo.setSelection(spinnerPosition);
+            }
 
         }
     }
@@ -104,25 +113,44 @@ public class RegistroIncidenciaActivity extends AppCompatActivity  {
     }
 
     private void registrarIncidencia() {
-        Intent intent = new Intent(this, IncidenciaActivity.class);
-        intent.putExtra("UsuarioLogin",mUsuario);
+        if (validateFields()) {
+            Intent intent = new Intent(this, IncidenciaActivity.class);
+            intent.putExtra("UsuarioLogin",mUsuario);
+
+            Incidencia incidencia = new Incidencia();
+            Usuario usuario = new Usuario();
+            incidencia.titulo = mEdtTitulo.getText().toString();
+            incidencia.tipo = mEdtTipo.getSelectedItem().toString();
+            incidencia.contenido = mEdtContenido.getText().toString();
+            //BD
+            IncidenciaDataSource dataSource = new IncidenciaDataSource(this);
+            UsuarioDataSource dataSourceUsuario = new UsuarioDataSource(this);
+
+            int idUsuario = dataSourceUsuario.idUsuario(mUsuario);
+            dataSource.insert(incidencia,idUsuario);
+            Toast.makeText(this, "Incidencia registrada correctamente.", Toast.LENGTH_LONG).show();
+            finish();
+            startActivity(intent);
+        }
 
 
-        Incidencia incidencia = new Incidencia();
-        Usuario usuario = new Usuario();
-        incidencia.titulo = mEdtTitulo.getText().toString();
-        incidencia.tipo = mEdtTipo.getSelectedItem().toString();
-        incidencia.contenido = mEdtContenido.getText().toString();
-       // mUsuario.id;
+    }
 
-        //BD
-        IncidenciaDataSource dataSource = new IncidenciaDataSource(this);
-        UsuarioDataSource dataSourceUsuario = new UsuarioDataSource(this);
-
-        int idUsuario = dataSourceUsuario.idUsuario(mUsuario);
-        dataSource.insert(incidencia,idUsuario);
-        Toast.makeText(this, "Incidencia registrada correctamente.", Toast.LENGTH_LONG).show();
-        finish();
-        startActivity(intent);
+    private boolean validateFields(){
+        boolean valid =true;
+        if(mEdtTitulo.getText().toString().isEmpty()){
+            mEdtTitulo.setError("Titulo Requerido");
+            valid = false;
+        }else if (mEdtTipo.getSelectedItem().toString().isEmpty()){
+            Toast.makeText(this, "El tipo de incidente es obligatorio", Toast.LENGTH_LONG).show();
+            valid = false;
+        }else if (mEdtContenido.getText().toString().isEmpty()){
+            mEdtContenido.setError("Contenido Requerido");
+            valid = false;
+        }else if (mEdtTipo.getSelectedItem().toString().equals("Tipo Incidente")){
+            Toast.makeText(this, "Seleccione el tipo de incidente", Toast.LENGTH_LONG).show();
+            valid = false;
+        }
+        return valid;
     }
 }

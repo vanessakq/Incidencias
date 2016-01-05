@@ -59,7 +59,7 @@ public class IncidenciaDataSource {
         };
 
 
-        Cursor cursor = mDatabase.query(DatabaseHelper.TABLE_INCIDENCIA,columns,null,null,null,null,null);
+        Cursor cursor = mDatabase.query(DatabaseHelper.TABLE_INCIDENCIA,columns,null,null,null,null,DatabaseHelper.COLUMN_FECHA + " DESC");
         List<Incidencia> lstIncidencia = new ArrayList<>();
         while (cursor.moveToNext()){
             Incidencia incidencia = new Incidencia();
@@ -146,6 +146,7 @@ public class IncidenciaDataSource {
         cal1.setTime(new Date());
 
         SimpleDateFormat myFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
 
         Date fecha = null;
 
@@ -165,7 +166,7 @@ public class IncidenciaDataSource {
         String strFecha = "";
 
         if(diff >= (24 * 60 * 60 * 1000)){//Mayor a 1 dia
-            strFecha = fec;
+            strFecha = formato.format(fecha);
         }
         else{
             if(diff >= (60 * 60 * 1000)){
