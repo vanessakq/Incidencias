@@ -16,6 +16,7 @@ public class Incidencia implements Parcelable {
     public String creador;
     public String latitud;
     public String longitud;
+    public String fechalarga;
 
     public Incidencia() {
     }
@@ -29,6 +30,7 @@ public class Incidencia implements Parcelable {
         creador = in.readString();
         latitud = in.readString();
         longitud = in.readString();
+        fechalarga = in.readString();
     }
 
     public static final Creator<Incidencia> CREATOR = new Creator<Incidencia>() {
@@ -58,6 +60,7 @@ public class Incidencia implements Parcelable {
         dest.writeString(creador);
         dest.writeString(latitud);
         dest.writeString(longitud);
+        dest.writeString(fechalarga);
     }
 
     public String getTitulo() {
@@ -86,5 +89,9 @@ public class Incidencia implements Parcelable {
 
     public String getLongitud(){
         return longitud;
+    }
+
+    public String getFechalarga(){
+        return fechalarga;
     }
 }

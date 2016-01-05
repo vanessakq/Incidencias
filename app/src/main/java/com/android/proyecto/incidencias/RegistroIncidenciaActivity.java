@@ -58,7 +58,7 @@ public class RegistroIncidenciaActivity extends AppCompatActivity  {
         if (mincidencia != null){
             mEdtTitulo.setText(mincidencia.titulo);
             mEdtContenido.setText(mincidencia.contenido);
-            mFec.setText(mincidencia.fecha);
+            mFec.setText(mincidencia.fechalarga);
 
             String compareValue = mincidencia.tipo;
             if (!compareValue.equals(null)) {

@@ -67,13 +67,13 @@ public class IncidenciaDataSource {
             incidencia.titulo = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_TITULO));
             incidencia.tipo = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_TIPO));
             incidencia.contenido = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_CONTENIDO));
-            incidencia.fecha = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_FECHA));
+            incidencia.fechalarga = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_FECHA));
 
             String nom = nomUsuario(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_COD_USUARIO)));
-            String fec = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_FECHA));
+            String fec = obtenerFecha(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_FECHA)));
 
-            incidencia.fecha = obteherFecha(fec);
             incidencia.creador = nom;
+            incidencia.fecha = fec;
             lstIncidencia.add(incidencia);
         }
         cursor.close();
@@ -113,16 +113,13 @@ public class IncidenciaDataSource {
             incidencia.titulo = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_TITULO));
             incidencia.tipo = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_TIPO));
             incidencia.contenido = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_CONTENIDO));
+            incidencia.fechalarga = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_FECHA));
 
             String nom = nomUsuario(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_COD_USUARIO)));
-
-            String fec = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_FECHA));
-
-            incidencia.fecha = obteherFecha(fec);
+            String fec = obtenerFecha(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_FECHA)));
 
             incidencia.creador = nom;
-
-            Log.d(TAG, "Inserto Exitooooooooooooooooooooooooooooooooooooooooooooo" + incidencia.id + " -- " + incidencia.titulo);
+            incidencia.fecha = fec;
             lstIncidencia.add(incidencia);
         }
         cursor.close();
@@ -139,7 +136,7 @@ public class IncidenciaDataSource {
         return nombre;
     }
 
-    public String obteherFecha(String fec){
+    public String obtenerFecha(String fec){
 
         Calendar cal1 = Calendar.getInstance();
         Calendar cal2 = Calendar.getInstance();
@@ -169,16 +166,16 @@ public class IncidenciaDataSource {
             strFecha = formato.format(fecha);
         }
         else{
-            if(diff >= (60 * 60 * 1000)){
+            if(diff >= (60 * 60 * 1000)){//Fecha en horas
                 long diffHours = diff / (60 * 60 * 1000);
                 strFecha = Long.toString(diffHours) + " h";
             }
             else{
-                if(diff >= (60 * 1000)){
+                if(diff >= (60 * 1000)){//Fecha en minutos
                     long diffMinutes = diff / (60 * 1000);
                     strFecha = Long.toString(diffMinutes) + " min";
                 }
-                else{
+                else{//Fecha en este instante
                     strFecha = "Ahora";
                 }
             }

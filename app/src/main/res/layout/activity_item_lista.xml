@@ -59,18 +59,24 @@
             android:layout_height="wrap_content"
             android:textStyle="normal"
             android:visibility="invisible"
-            android:textSize="12sp" />
+            android:textSize="0sp" />
         <TextView android:id="@+id/Lbl_LstItmLatitud"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="normal"
             android:visibility="invisible"
-            android:textSize="12sp" />
+            android:textSize="0sp" />
         <TextView android:id="@+id/Lbl_LstItmLongitud"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="normal"
             android:visibility="invisible"
-            android:textSize="12sp" />
+            android:textSize="0sp" />
+        <TextView android:id="@+id/Lbl_LstItmFechaLarga"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="normal"
+            android:visibility="invisible"
+            android:textSize="0sp" />
     </LinearLayout>
 </LinearLayout>

@@ -37,6 +37,7 @@ public class IncidenciaActivity extends AppCompatActivity  {
     private TextView txtFecha;
     private TextView txtTipo;
     private TextView txtContenido;
+    private TextView txtFechaLarga;
     //Variable Comentario
     private static final  String TAG ="Entro a : ";
 
@@ -73,7 +74,7 @@ public class IncidenciaActivity extends AppCompatActivity  {
                 txtFecha = (TextView) findViewById(R.id.Lbl_LstItmFecha);
                 txtTipo = (TextView) findViewById(R.id.Lbl_LstItmTipo);
                 txtContenido = (TextView) findViewById(R.id.Lbl_LstItmContenido);
-
+                txtFechaLarga = (TextView) findViewById(R.id.Lbl_LstItmFechaLarga);
                 //Log.d(TAG, "The Item Clicked is: " + recView.getChildPosition(v) + mIncidencias.get(recView.getChildPosition(v)).titulo);
                 editarRecycler(v);
             }
