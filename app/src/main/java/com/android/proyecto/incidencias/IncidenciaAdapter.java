@@ -58,6 +58,8 @@ public class IncidenciaAdapter extends  RecyclerView.Adapter<IncidenciaAdapter.F
             holder.txtContenido.setText(Html.fromHtml(feedItem.getContenido()));
             holder.txtUsuario.setText(Html.fromHtml(feedItem.getCreador()));
             holder.txtFechaLarga.setText(Html.fromHtml(feedItem.getFechalarga()));
+            holder.txtLatitud.setText(Html.fromHtml(feedItem.getLatitud()));
+            holder.txtLongitud.setText(Html.fromHtml(feedItem.getLongitud()));
         }
         catch (Exception e){
             Log.e(TAG,"Fatal Exception", e);
@@ -79,6 +81,8 @@ public class IncidenciaAdapter extends  RecyclerView.Adapter<IncidenciaAdapter.F
         protected TextView txtContenido;
         protected TextView txtUsuario;
         protected TextView txtFechaLarga;
+        protected TextView txtLatitud;
+        protected TextView txtLongitud;
 
         public FeedListRowHolder (View view) {
             super(view);
@@ -89,6 +93,8 @@ public class IncidenciaAdapter extends  RecyclerView.Adapter<IncidenciaAdapter.F
             txtContenido = (TextView)view.findViewById(R.id.Lbl_LstItmContenido);
             txtUsuario = (TextView)view.findViewById(R.id.Lbl_LstItmAutor);
             txtFechaLarga = (TextView)view.findViewById(R.id.Lbl_LstItmFechaLarga);
+            txtLatitud = (TextView)view.findViewById(R.id.Lbl_LstItmLatitud);
+            txtLongitud = (TextView)view.findViewById(R.id.Lbl_LstItmLongitud);
         }
     }
     public void setOnClickListener(View.OnClickListener listener) {

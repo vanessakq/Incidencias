@@ -43,6 +43,8 @@ public class IncidenciaDataSource {
         values.put(DatabaseHelper.COLUMN_TIPO, incidencia.tipo);
         values.put(DatabaseHelper.COLUMN_FECHA, sdf.format(new Date()));
         values.put(DatabaseHelper.COLUMN_COD_USUARIO, id);
+        values.put(DatabaseHelper.COLUMN_LATITUD, incidencia.latitud);
+        values.put(DatabaseHelper.COLUMN_LONGITUD, incidencia.longitud);
 
         mDatabase.insert(DatabaseHelper.TABLE_INCIDENCIA, null, values);
 
@@ -55,7 +57,9 @@ public class IncidenciaDataSource {
                 DatabaseHelper.COLUMN_TIPO,
                 DatabaseHelper.COLUMN_CONTENIDO,
                 DatabaseHelper.COLUMN_FECHA,
-                DatabaseHelper.COLUMN_COD_USUARIO
+                DatabaseHelper.COLUMN_COD_USUARIO,
+                DatabaseHelper.COLUMN_LATITUD,
+                DatabaseHelper.COLUMN_LONGITUD
         };
 
 
@@ -68,7 +72,8 @@ public class IncidenciaDataSource {
             incidencia.tipo = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_TIPO));
             incidencia.contenido = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_CONTENIDO));
             incidencia.fechalarga = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_FECHA));
-
+            incidencia.latitud = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_LATITUD));
+            incidencia.longitud = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_LONGITUD));
             String nom = nomUsuario(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_COD_USUARIO)));
             String fec = obtenerFecha(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_FECHA)));
 
@@ -82,8 +87,16 @@ public class IncidenciaDataSource {
     }
 
     public void update(Incidencia incidencia ){
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+
         ContentValues values = new ContentValues();
         values.put(DatabaseHelper.COLUMN_TITULO, incidencia.titulo);
+        values.put(DatabaseHelper.COLUMN_CONTENIDO, incidencia.contenido);
+        values.put(DatabaseHelper.COLUMN_TIPO, incidencia.tipo);
+        values.put(DatabaseHelper.COLUMN_FECHA, sdf.format(new Date()));
+        values.put(DatabaseHelper.COLUMN_LATITUD, incidencia.latitud);
+        values.put(DatabaseHelper.COLUMN_LONGITUD, incidencia.longitud);
         Log.d(TAG, "Inserto Exitooooooooooooooooooooooooooooooooooooooooooooo" + incidencia.titulo + " -- " + incidencia.id);
         String whereClause = BaseColumns._ID + " =?";
         String[] whereArgs = {String.valueOf(incidencia.id)};
@@ -98,7 +111,9 @@ public class IncidenciaDataSource {
                 DatabaseHelper.COLUMN_TIPO,
                 DatabaseHelper.COLUMN_CONTENIDO,
                 DatabaseHelper.COLUMN_FECHA,
-                DatabaseHelper.COLUMN_COD_USUARIO
+                DatabaseHelper.COLUMN_COD_USUARIO,
+                DatabaseHelper.COLUMN_LATITUD,
+                DatabaseHelper.COLUMN_LONGITUD
         };
 
         String whereClause = DatabaseHelper.COLUMN_COD_USUARIO + " =?";
@@ -114,6 +129,8 @@ public class IncidenciaDataSource {
             incidencia.tipo = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_TIPO));
             incidencia.contenido = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_CONTENIDO));
             incidencia.fechalarga = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_FECHA));
+            incidencia.latitud = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_LATITUD));
+            incidencia.longitud = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_LONGITUD));
 
             String nom = nomUsuario(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_COD_USUARIO)));
             String fec = obtenerFecha(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_FECHA)));

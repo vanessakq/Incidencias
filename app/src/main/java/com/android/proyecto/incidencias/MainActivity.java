@@ -75,9 +75,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             String correo = mTxt_LoginEmail.getText().toString();
             String clave = mTxt_LoginContrasena.getText().toString();
             UsuarioDataSource dataSource = new UsuarioDataSource(this);
-            String storedPassword = dataSource.validarusuario(correo);
+
 
             if(isEmailValid(correo)){
+                String storedPassword = dataSource.validarusuario(correo);
                 if(clave.equals(storedPassword))
                 {
 

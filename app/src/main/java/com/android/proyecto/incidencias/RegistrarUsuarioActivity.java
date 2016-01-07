@@ -92,9 +92,11 @@ public class RegistrarUsuarioActivity extends AppCompatActivity implements View.
             String correoNuevo = mEdtCorreo.getText().toString();
             String claveNueva = mEdtPass.getText().toString();
             UsuarioDataSource dataSource = new UsuarioDataSource(this);
-            String storedPassword = dataSource.validarusuario(correoNuevo);
+
 
             if(isEmailValid(correoNuevo)){
+                String storedPassword = dataSource.validarusuario(correoNuevo);
+
                 if(storedPassword.equals("NOT EXIST")){
                     dataSource.insert(usuario);
                     Toast.makeText(this, "Usuario registrado correctamente.", Toast.LENGTH_LONG).show();

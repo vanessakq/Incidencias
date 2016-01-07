@@ -12,7 +12,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.android.proyecto.incidencias.database.IncidenciaDataSource;
 import com.android.proyecto.incidencias.database.UsuarioDataSource;
 import com.android.proyecto.incidencias.model.Incidencia;
@@ -20,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class IncidenciaActivity extends AppCompatActivity  {
-
 
     //EXTRA Variable Global
     private String mUsuario;
@@ -38,6 +36,9 @@ public class IncidenciaActivity extends AppCompatActivity  {
     private TextView txtTipo;
     private TextView txtContenido;
     private TextView txtFechaLarga;
+    private TextView txtLatitud;
+    private TextView txtLongitud;
+
     //Variable Comentario
     private static final  String TAG ="Entro a : ";
 
@@ -75,6 +76,8 @@ public class IncidenciaActivity extends AppCompatActivity  {
                 txtTipo = (TextView) findViewById(R.id.Lbl_LstItmTipo);
                 txtContenido = (TextView) findViewById(R.id.Lbl_LstItmContenido);
                 txtFechaLarga = (TextView) findViewById(R.id.Lbl_LstItmFechaLarga);
+                txtLatitud = (TextView) findViewById(R.id.Lbl_LstItmLatitud);
+                txtLongitud = (TextView) findViewById(R.id.Lbl_LstItmLongitud);
                 //Log.d(TAG, "The Item Clicked is: " + recView.getChildPosition(v) + mIncidencias.get(recView.getChildPosition(v)).titulo);
                 editarRecycler(v);
             }
@@ -127,7 +130,7 @@ public class IncidenciaActivity extends AppCompatActivity  {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.action_nuevo:
-                Toast.makeText(this, "ENtro a funcion", Toast.LENGTH_LONG).show();
+                //Toast.makeText(this, "ENtro a funcion", Toast.LENGTH_LONG).show();
                 startRegistroIncidenciaActivity();
                 break;
             case R.id.action_todas:
