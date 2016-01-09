@@ -3,6 +3,7 @@ package com.android.proyecto.incidencias;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.util.Log;
@@ -42,6 +43,7 @@ public class IncidenciaAdapter extends  RecyclerView.Adapter<IncidenciaAdapter.F
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_item_lista, parent, false);
         v.setOnClickListener(this);
         return new FeedListRowHolder(v);
+
     }
 
     @Override
@@ -58,11 +60,11 @@ public class IncidenciaAdapter extends  RecyclerView.Adapter<IncidenciaAdapter.F
             holder.txtLatitud.setText(Html.fromHtml(feedItem.getLatitud()));
             holder.txtLongitud.setText(Html.fromHtml(feedItem.getLongitud()));
 
-
-            String url_str = "https://maps.googleapis.com/maps/api/staticmap?center="+Html.fromHtml(feedItem.getLatitud())+","+Html.fromHtml(feedItem.getLongitud());
-
-
-            //Picasso.with(context).load("http://i.imgur.com/DvpvklR.png").into(holder.imageView);
+            String url_str = "https://maps.googleapis.com/maps/api/staticmap?center="
+                    +Html.fromHtml(feedItem.getLatitud())+","+Html.fromHtml(feedItem.getLongitud())
+                    +"&zoom=13&size=190x190&maptype=roadmap"
+                    +"&markers=color:red%7Clabel:C%7C"+Html.fromHtml(feedItem.getLatitud())+","+Html.fromHtml(feedItem.getLongitud());
+            Picasso.with(null).load(url_str).into(holder.imageView);
 
         }
         catch (Exception e){

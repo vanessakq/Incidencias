@@ -10,6 +10,7 @@ import android.util.Log;
 import com.android.proyecto.incidencias.model.Incidencia;
 import com.android.proyecto.incidencias.model.Usuario;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -32,19 +33,25 @@ public class IncidenciaDataSource {
     }
 
     public void insert(Incidencia incidencia , int id){
-        //String idValue = String.valueOf(id);
-
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
         ContentValues values = new ContentValues();
+
+
 
         values.put(DatabaseHelper.COLUMN_TITULO, incidencia.titulo);
         values.put(DatabaseHelper.COLUMN_CONTENIDO, incidencia.contenido);
         values.put(DatabaseHelper.COLUMN_TIPO, incidencia.tipo);
-        values.put(DatabaseHelper.COLUMN_FECHA, sdf.format(new Date()));
         values.put(DatabaseHelper.COLUMN_COD_USUARIO, id);
         values.put(DatabaseHelper.COLUMN_LATITUD, incidencia.latitud);
         values.put(DatabaseHelper.COLUMN_LONGITUD, incidencia.longitud);
+
+        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        try {
+            Date date = formatter.parse(incidencia.fechalarga);
+            values.put(DatabaseHelper.COLUMN_FECHA, formatter.format(date));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         mDatabase.insert(DatabaseHelper.TABLE_INCIDENCIA, null, values);
 
@@ -89,16 +96,21 @@ public class IncidenciaDataSource {
 
     public void update(Incidencia incidencia ){
 
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-
         ContentValues values = new ContentValues();
         values.put(DatabaseHelper.COLUMN_TITULO, incidencia.titulo);
         values.put(DatabaseHelper.COLUMN_CONTENIDO, incidencia.contenido);
         values.put(DatabaseHelper.COLUMN_TIPO, incidencia.tipo);
-        values.put(DatabaseHelper.COLUMN_FECHA, sdf.format(new Date()));
         values.put(DatabaseHelper.COLUMN_LATITUD, incidencia.latitud);
         values.put(DatabaseHelper.COLUMN_LONGITUD, incidencia.longitud);
-        Log.d(TAG, "Inserto Exitooooooooooooooooooooooooooooooooooooooooooooo" + incidencia.titulo + " -- " + incidencia.id);
+
+        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        try {
+            Date date = formatter.parse(incidencia.fechalarga);
+            values.put(DatabaseHelper.COLUMN_FECHA, formatter.format(date));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         String whereClause = BaseColumns._ID + " =?";
         String[] whereArgs = {String.valueOf(incidencia.id)};
 

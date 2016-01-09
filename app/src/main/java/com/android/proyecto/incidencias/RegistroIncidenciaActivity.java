@@ -1,5 +1,8 @@
 package com.android.proyecto.incidencias;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
@@ -9,10 +12,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 import com.android.proyecto.incidencias.database.IncidenciaDataSource;
 import com.android.proyecto.incidencias.database.UsuarioDataSource;
@@ -27,6 +33,11 @@ import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by kquispe on 30/11/2015.
@@ -56,7 +67,23 @@ public class RegistroIncidenciaActivity extends AppCompatActivity
 
     //Variable para el combo de tipos de incidentes
     private Spinner mEdtTipo;
-    String[] datos = {"Tipo Incidente", "Robo", "Accidente Vehicular", "Disturbios", "Otros"};
+    String[] datos = {"-- Seleccione --", "Robo", "Accidente Vehicular", "Disturbios", "Otros"};
+
+
+    //Campos Fecha y Hora
+    private TextView tvDisplayDate;
+    private TextView tvDisplayHour;
+    private Button btnChangeDate;
+    private Button btnChangeHour;
+
+    private int year;
+    private int month;
+    private int day;
+    private int hour;
+    private int min;
+
+    static final int DATE_DIALOG_ID = 999;
+    static final int TIME_DIALOG_ID = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +101,10 @@ public class RegistroIncidenciaActivity extends AppCompatActivity
         mEdtTitulo = (EditText) findViewById(R.id.inc_titulo);
         mEdtContenido = (EditText) findViewById(R.id.inc_contenido);
         mFec = (TextView) findViewById(R.id.inc_fecha);
+
+        btnChangeDate = (Button) findViewById(R.id.btnChangeDate);
+        btnChangeHour = (Button) findViewById(R.id.btnChangeHour);
+
         mincidencia = getIntent().getParcelableExtra("incidencia");
         mUsuario = getIntent().getExtras().getString("UsuarioLogin");
 
@@ -82,8 +113,8 @@ public class RegistroIncidenciaActivity extends AppCompatActivity
         button.setOnClickListener(new View.OnClickListener() {//Creamos el marcador en nuestra posición desde el boton
             public void onClick(View v) {
                 // Perform action on click
-                if(existeMarcador.equals("N")){
-                    if(latLngIni!=null){
+                if (existeMarcador.equals("N")) {
+                    if (latLngIni != null) {
 
                         markerOptions = new MarkerOptions()
                                 .position(latLngIni)
@@ -94,10 +125,10 @@ public class RegistroIncidenciaActivity extends AppCompatActivity
                         latitud = latLngIni.latitude;
                         longitud = latLngIni.longitude;
                         existeMarcador = "S";
-                    }else{
+                    } else {
                         setMensajeNoUbicacion();
                     }
-                }else{
+                } else {
                     setMensajeUnMarcador();
                 }
 
@@ -106,7 +137,7 @@ public class RegistroIncidenciaActivity extends AppCompatActivity
 
         setUpMapIfNeeded();
 
-        if (mincidencia != null){
+        if (mincidencia != null){//Obtenemos los campos de edición
             mEdtTitulo.setText(mincidencia.titulo);
             mEdtContenido.setText(mincidencia.contenido);
             mFec.setText(mincidencia.fechalarga);
@@ -118,7 +149,6 @@ public class RegistroIncidenciaActivity extends AppCompatActivity
             }
             //Creamos el marcador al momento de editar la incidencia.
             LatLng latLng1 = new LatLng(Double.parseDouble(mincidencia.latitud), Double.parseDouble(mincidencia.longitud));
-
 
             latitud = Double.parseDouble(mincidencia.latitud);
             longitud = Double.parseDouble(mincidencia.longitud);
@@ -132,6 +162,8 @@ public class RegistroIncidenciaActivity extends AppCompatActivity
                 mEdtTitulo.setEnabled(false);
                 mEdtContenido.setEnabled(false);
                 mEdtTipo.setEnabled(false);
+                btnChangeDate.setEnabled(false);
+                btnChangeHour.setEnabled(false);
                 markerOptions = new MarkerOptions()
                         .position(latLng1)
                         .title(mincidencia.tipo)
@@ -146,7 +178,22 @@ public class RegistroIncidenciaActivity extends AppCompatActivity
             mMap.addMarker(markerOptions);
             CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng1, 14f);
             mMap.animateCamera(cameraUpdate);
+
+            Calendar cal = Calendar.getInstance();
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.US);
+            try {
+                cal.setTime(sdf.parse(mincidencia.fechalarga));
+                setCurrentDateOnView(cal);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+
+        }else{
+            setCurrentDateOnView(null);
         }
+
+        addListenerOnButton();
 
     }
 
@@ -201,8 +248,6 @@ public class RegistroIncidenciaActivity extends AppCompatActivity
             }else{
                 menuResId = R.menu.cerrar_sesion;
             }
-
-
         }
         else{
             menuResId = R.menu.registro_incidencia;
@@ -210,8 +255,6 @@ public class RegistroIncidenciaActivity extends AppCompatActivity
         getMenuInflater().inflate(menuResId, menu);
         return super.onCreateOptionsMenu(menu);
     }
-
-
 
     @Override
     public boolean onPrepareOptionsMenu (Menu menu) {
@@ -240,17 +283,28 @@ public class RegistroIncidenciaActivity extends AppCompatActivity
 
 
     private void editarIncidencia() {
-        mincidencia.titulo = mEdtTitulo.getText().toString();
-        mincidencia.tipo = mEdtTipo.getSelectedItem().toString();
-        mincidencia.contenido = mEdtContenido.getText().toString();
-        mincidencia.latitud = String.valueOf(latitud);
-        mincidencia.longitud = String.valueOf(longitud);
+        if (validateFields()) {
+            mincidencia.titulo = mEdtTitulo.getText().toString();
+            mincidencia.tipo = mEdtTipo.getSelectedItem().toString();
+            mincidencia.contenido = mEdtContenido.getText().toString();
+            mincidencia.latitud = String.valueOf(latitud);
+            mincidencia.longitud = String.valueOf(longitud);
 
-        //BD
-        IncidenciaDataSource dataSource = new IncidenciaDataSource(this);
-        dataSource.update(mincidencia);
-        finish();
+            tvDisplayDate = (TextView) findViewById(R.id.tvDate);
+            tvDisplayHour = (TextView) findViewById(R.id.tvHour);
 
+            String  fecha_app = tvDisplayDate.getText().toString()+" "+tvDisplayHour.getText().toString();
+            mincidencia.fechalarga = fecha_app;
+
+
+            if(validateFecha(fecha_app)){
+                IncidenciaDataSource dataSource = new IncidenciaDataSource(this);
+                dataSource.update(mincidencia);
+                finish();
+            }else{
+                Toast.makeText(this, "La fecha y Hora no puede ser mayor a la actual", Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
     private void registrarIncidencia() {
@@ -273,12 +327,22 @@ public class RegistroIncidenciaActivity extends AppCompatActivity
                 UsuarioDataSource dataSourceUsuario = new UsuarioDataSource(this);
 
                 int idUsuario = dataSourceUsuario.idUsuario(mUsuario);
-                dataSource.insert(incidencia,idUsuario);
-                Toast.makeText(this, "Incidencia registrada correctamente.", Toast.LENGTH_LONG).show();
-                finish();
-                startActivity(intent);
 
+                tvDisplayDate = (TextView) findViewById(R.id.tvDate);
+                tvDisplayHour = (TextView) findViewById(R.id.tvHour);
 
+                String  fecha_app = tvDisplayDate.getText().toString()+" "+tvDisplayHour.getText().toString();
+
+                incidencia.fechalarga = fecha_app;
+
+                if(validateFecha(fecha_app)){
+                    dataSource.insert(incidencia,idUsuario);
+                    Toast.makeText(this, "Incidencia registrada correctamente.", Toast.LENGTH_LONG).show();
+                    finish();
+                    startActivity(intent);
+                }else{
+                    Toast.makeText(this, "La fecha y Hora no puede ser mayor a la actual", Toast.LENGTH_LONG).show();
+                }
 
             }else{
                 Toast.makeText(this, "Debe agregar la ubicación del Incidente", Toast.LENGTH_LONG).show();
@@ -303,6 +367,38 @@ public class RegistroIncidenciaActivity extends AppCompatActivity
         LatLng position=marker.getPosition();
     }
 
+
+    private boolean validateFecha(String fec){
+        boolean valid = true;
+
+        Calendar cal1 = Calendar.getInstance();
+        Calendar cal2 = Calendar.getInstance();
+        cal1.setTime(new Date());
+
+        SimpleDateFormat myFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+
+        Date fecha = null;
+
+        try {
+
+            fecha = myFormat.parse(fec);
+            cal2.setTime(fecha);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        long milis1 = cal1.getTimeInMillis();
+        long milis2 = cal2.getTimeInMillis();
+        long diff = milis1 - milis2;
+
+        if(diff<0){
+            valid = false;
+        }
+
+        return valid;
+    }
+
     private boolean validateFields(){
         boolean valid =true;
         if(mEdtTitulo.getText().toString().isEmpty()){
@@ -314,7 +410,7 @@ public class RegistroIncidenciaActivity extends AppCompatActivity
         }else if (mEdtContenido.getText().toString().isEmpty()){
             mEdtContenido.setError("Contenido Requerido");
             valid = false;
-        }else if (mEdtTipo.getSelectedItem().toString().equals("Tipo Incidente")){
+        }else if (mEdtTipo.getSelectedItem().toString().equals("-- Seleccione --")){
             Toast.makeText(this, "Seleccione el tipo de incidente", Toast.LENGTH_LONG).show();
             valid = false;
         }
@@ -358,5 +454,119 @@ public class RegistroIncidenciaActivity extends AppCompatActivity
         startActivity(intent);
         Toast.makeText(this, "Incidencia Eliminada Correctamente",Toast.LENGTH_SHORT).show();
     }
+
+    //Control de Fecha y hora
+    public void setCurrentDateOnView(Calendar cal) {
+
+        tvDisplayDate = (TextView) findViewById(R.id.tvDate);
+        tvDisplayHour = (TextView) findViewById(R.id.tvHour);
+
+        if(cal==null){
+            final Calendar c = Calendar.getInstance();
+            year = c.get(Calendar.YEAR);
+            month = c.get(Calendar.MONTH);
+            day = c.get(Calendar.DAY_OF_MONTH);
+
+            hour = c.get(Calendar.HOUR_OF_DAY);
+            min = c.get(Calendar.MINUTE);
+
+            tvDisplayDate.setText(new StringBuilder()
+                    .append(day).append("/")
+                    .append(month + 1).append("/")
+                    .append(year));
+            showTime(hour, min);
+        }else{
+
+            year = cal.get(Calendar.YEAR);
+            month = cal.get(Calendar.MONTH);
+            day = cal.get(Calendar.DAY_OF_MONTH);
+
+            hour = cal.get(Calendar.HOUR_OF_DAY);
+            min = cal.get(Calendar.MINUTE);
+
+            tvDisplayDate.setText(new StringBuilder()
+                    .append(day).append("/")
+                    .append(month + 1).append("/")
+                    .append(year));
+            showTime(hour, min);
+
+        }
+
+    }
+
+    public void showTime(int hour, int min) {
+
+        tvDisplayHour.setText(new StringBuilder().append(hour).append(":").append(min));
+    }
+
+
+    public void addListenerOnButton() {
+
+        btnChangeDate = (Button) findViewById(R.id.btnChangeDate);
+        btnChangeHour = (Button) findViewById(R.id.btnChangeHour);
+
+        btnChangeDate.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                showDialog(DATE_DIALOG_ID);
+
+            }
+
+        });
+        btnChangeHour.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                showDialog(TIME_DIALOG_ID);
+
+            }
+
+        });
+
+    }
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        switch (id) {
+            case DATE_DIALOG_ID:
+                // set date picker as current date
+                return new DatePickerDialog(this, datePickerListener,
+                        year, month,day);
+            case TIME_DIALOG_ID:
+                // set date picker as current date
+                return new TimePickerDialog(this,
+                        hourPickerListener, hour, min, true);
+        }
+        return null;
+    }
+
+    private DatePickerDialog.OnDateSetListener datePickerListener
+            = new DatePickerDialog.OnDateSetListener() {
+
+        public void onDateSet(DatePicker view, int selectedYear,
+                              int selectedMonth, int selectedDay) {
+            year = selectedYear;
+            month = selectedMonth;
+            day = selectedDay;
+
+            tvDisplayDate.setText(new StringBuilder()
+                    .append(day).append("/")
+                    .append(month + 1).append("/")
+                    .append(year));
+        }
+    };
+    private TimePickerDialog.OnTimeSetListener hourPickerListener
+            = new TimePickerDialog.OnTimeSetListener() {
+
+        @Override
+        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+            hour = hourOfDay;
+            min = minute;
+            showTime(hour, min);
+        }
+    };
 
 }

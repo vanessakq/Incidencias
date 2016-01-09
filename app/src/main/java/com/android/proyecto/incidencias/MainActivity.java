@@ -7,10 +7,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.proyecto.incidencias.database.UsuarioDataSource;
 import com.android.proyecto.incidencias.model.Usuario;
+import com.squareup.picasso.Picasso;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -32,6 +34,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Btn_LoginIngresar.setOnClickListener(this);
         Button Btn_LoginNoCuenta = (Button) findViewById(R.id.Btn_LoginNoCuenta);
         Btn_LoginNoCuenta.setOnClickListener(this);
+
+        ImageView imageView = (ImageView) findViewById(R.id.imagen);
+
+        Picasso.with(this).load("http://www.infodago.es/wp-content/uploads/2015/10/soporte1.png?quality=100.3015112611141").into(imageView);
+        //Ion.with(imageView)
     }
     @Override
     public void onClick(View v) {
@@ -104,4 +111,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Intent intent = new Intent(this, RegistrarUsuarioActivity.class);
         startActivity(intent);
     }
+
+
 }
