@@ -74,6 +74,7 @@ public class IncidenciaDataSource {
             incidencia.fechalarga = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_FECHA));
             incidencia.latitud = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_LATITUD));
             incidencia.longitud = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_LONGITUD));
+            incidencia.codusuario = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_COD_USUARIO));
             String nom = nomUsuario(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_COD_USUARIO)));
             String fec = obtenerFecha(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_FECHA)));
 
@@ -104,6 +105,13 @@ public class IncidenciaDataSource {
         mDatabase.update(DatabaseHelper.TABLE_INCIDENCIA, values, whereClause, whereArgs);
 
     }
+
+    public void delete(int id){
+        String whereClause = BaseColumns._ID + " = ?";
+        String whereArgs[] = {String.valueOf(id)};
+        mDatabase.delete(DatabaseHelper.TABLE_INCIDENCIA, whereClause, whereArgs);
+    }
+
     public List<Incidencia> listUser(int id){
         String[] columns = {
                 BaseColumns._ID,
@@ -131,6 +139,7 @@ public class IncidenciaDataSource {
             incidencia.fechalarga = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_FECHA));
             incidencia.latitud = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_LATITUD));
             incidencia.longitud = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_LONGITUD));
+            incidencia.codusuario = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_COD_USUARIO));
 
             String nom = nomUsuario(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_COD_USUARIO)));
             String fec = obtenerFecha(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_FECHA)));

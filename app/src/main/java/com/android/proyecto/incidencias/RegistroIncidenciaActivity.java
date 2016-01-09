@@ -119,16 +119,33 @@ public class RegistroIncidenciaActivity extends AppCompatActivity
             //Creamos el marcador al momento de editar la incidencia.
             LatLng latLng1 = new LatLng(Double.parseDouble(mincidencia.latitud), Double.parseDouble(mincidencia.longitud));
 
-            markerOptions = new MarkerOptions()
-                    .position(latLng1)
-                    .title(mincidencia.tipo)
-                    .snippet(mincidencia.titulo)
-                    .draggable(true);
-            mMap.addMarker(markerOptions);
+
             latitud = Double.parseDouble(mincidencia.latitud);
             longitud = Double.parseDouble(mincidencia.longitud);
             existeMarcador = "S";
 
+            mUsuario = getIntent().getExtras().getString("UsuarioLogin");
+            UsuarioDataSource dataSourceUsuario = new UsuarioDataSource(this);
+            int idUsuario = dataSourceUsuario.idUsuario(mUsuario);
+
+            if(!mincidencia.codusuario.equals(Integer.toString(idUsuario))){
+                mEdtTitulo.setEnabled(false);
+                mEdtContenido.setEnabled(false);
+                mEdtTipo.setEnabled(false);
+                markerOptions = new MarkerOptions()
+                        .position(latLng1)
+                        .title(mincidencia.tipo)
+                        .snippet(mincidencia.titulo);
+            }else{
+                markerOptions = new MarkerOptions()
+                        .position(latLng1)
+                        .title(mincidencia.tipo)
+                        .snippet(mincidencia.titulo)
+                        .draggable(true);
+            }
+            mMap.addMarker(markerOptions);
+            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng1, 14f);
+            mMap.animateCamera(cameraUpdate);
         }
 
     }
@@ -174,13 +191,31 @@ public class RegistroIncidenciaActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         int menuResId;
         if (mincidencia !=null){
-            menuResId = R.menu.edicion_incidencia;
+
+            mUsuario = getIntent().getExtras().getString("UsuarioLogin");
+            UsuarioDataSource dataSourceUsuario = new UsuarioDataSource(this);
+            int idUsuario = dataSourceUsuario.idUsuario(mUsuario);
+
+            if(mincidencia.codusuario.equals(Integer.toString(idUsuario))){
+                menuResId = R.menu.edicion_incidencia;
+            }else{
+                menuResId = R.menu.cerrar_sesion;
+            }
+
+
         }
         else{
             menuResId = R.menu.registro_incidencia;
         }
         getMenuInflater().inflate(menuResId, menu);
         return super.onCreateOptionsMenu(menu);
+    }
+
+
+
+    @Override
+    public boolean onPrepareOptionsMenu (Menu menu) {
+        return true;
     }
 
     @Override
@@ -195,13 +230,14 @@ public class RegistroIncidenciaActivity extends AppCompatActivity
             case R.id.action_eliminar_incidencia:
                 eliminarIncidencia();
                 break;
+            case R.id.action_cerrar:
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void eliminarIncidencia() {
-
-    }
 
     private void editarIncidencia() {
         mincidencia.titulo = mEdtTitulo.getText().toString();
@@ -220,7 +256,7 @@ public class RegistroIncidenciaActivity extends AppCompatActivity
     private void registrarIncidencia() {
         if (validateFields()) {
             if(markerOptions!=null){
-                Toast.makeText(this, "Lat: "+latitud+" | Lon: "+longitud, Toast.LENGTH_LONG).show();
+                //Toast.makeText(this, "Lat: "+latitud+" | Lon: "+longitud, Toast.LENGTH_LONG).show();
 
                 Intent intent = new Intent(this, IncidenciaActivity.class);
                 intent.putExtra("UsuarioLogin",mUsuario);
@@ -309,6 +345,18 @@ public class RegistroIncidenciaActivity extends AppCompatActivity
     public boolean onMarkerClick(Marker marker) {
         //Toast.makeText(this, "Tutulo: "+marker.getTitle()+" Latitud: "+marker.getPosition().latitude+" Longitud: "+marker.getPosition().longitude, Toast.LENGTH_SHORT).show();
         return false;
+    }
+
+    private void eliminarIncidencia(){
+
+        Intent intent = new Intent(this, IncidenciaActivity.class);
+        intent.putExtra("UsuarioLogin", mUsuario);
+
+        IncidenciaDataSource dataSource = new IncidenciaDataSource(this);
+        dataSource.delete(mincidencia.id);
+        finish();
+        startActivity(intent);
+        Toast.makeText(this, "Incidencia Eliminada Correctamente",Toast.LENGTH_SHORT).show();
     }
 
 }

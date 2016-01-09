@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.android.proyecto.incidencias.database.IncidenciaDataSource;
 import com.android.proyecto.incidencias.database.UsuarioDataSource;
@@ -38,6 +39,7 @@ public class IncidenciaActivity extends AppCompatActivity  {
     private TextView txtFechaLarga;
     private TextView txtLatitud;
     private TextView txtLongitud;
+    private ImageView imageView;
 
     //Variable Comentario
     private static final  String TAG ="Entro a : ";
@@ -79,6 +81,7 @@ public class IncidenciaActivity extends AppCompatActivity  {
                 txtLatitud = (TextView) findViewById(R.id.Lbl_LstItmLatitud);
                 txtLongitud = (TextView) findViewById(R.id.Lbl_LstItmLongitud);
                 //Log.d(TAG, "The Item Clicked is: " + recView.getChildPosition(v) + mIncidencias.get(recView.getChildPosition(v)).titulo);
+                imageView = (ImageView) findViewById(R.id.Img_LstItm);
                 editarRecycler(v);
             }
         });

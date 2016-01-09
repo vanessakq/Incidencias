@@ -1,24 +1,21 @@
 package com.android.proyecto.incidencias;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.android.proyecto.incidencias.database.UsuarioDataSource;
 import com.android.proyecto.incidencias.model.Incidencia;
+import com.squareup.picasso.Picasso;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
+import java.net.URL;
 import java.util.List;
 
 /**
@@ -60,6 +57,13 @@ public class IncidenciaAdapter extends  RecyclerView.Adapter<IncidenciaAdapter.F
             holder.txtFechaLarga.setText(Html.fromHtml(feedItem.getFechalarga()));
             holder.txtLatitud.setText(Html.fromHtml(feedItem.getLatitud()));
             holder.txtLongitud.setText(Html.fromHtml(feedItem.getLongitud()));
+
+
+            String url_str = "https://maps.googleapis.com/maps/api/staticmap?center="+Html.fromHtml(feedItem.getLatitud())+","+Html.fromHtml(feedItem.getLongitud());
+
+
+            //Picasso.with(context).load("http://i.imgur.com/DvpvklR.png").into(holder.imageView);
+
         }
         catch (Exception e){
             Log.e(TAG,"Fatal Exception", e);
@@ -83,6 +87,7 @@ public class IncidenciaAdapter extends  RecyclerView.Adapter<IncidenciaAdapter.F
         protected TextView txtFechaLarga;
         protected TextView txtLatitud;
         protected TextView txtLongitud;
+        protected ImageView imageView;
 
         public FeedListRowHolder (View view) {
             super(view);
@@ -95,6 +100,7 @@ public class IncidenciaAdapter extends  RecyclerView.Adapter<IncidenciaAdapter.F
             txtFechaLarga = (TextView)view.findViewById(R.id.Lbl_LstItmFechaLarga);
             txtLatitud = (TextView)view.findViewById(R.id.Lbl_LstItmLatitud);
             txtLongitud = (TextView)view.findViewById(R.id.Lbl_LstItmLongitud);
+            imageView = (ImageView) view.findViewById(R.id.Img_LstItm);
         }
     }
     public void setOnClickListener(View.OnClickListener listener) {
